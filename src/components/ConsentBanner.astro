@@ -14,8 +14,8 @@ import { site } from '../data/site';
     </p>
   </div>
   <div class="actions">
-    <button type="button" class="btn btn--plain" data-consent-choice="denied">Decline</button>
-    <button type="button" class="btn btn--plain" data-consent-choice="granted">Accept</button>
+    <button type="button" class="btn" data-consent-choice="denied">Decline</button>
+    <button type="button" class="btn" data-consent-choice="granted">Accept</button>
   </div>
 </section>
 
@@ -23,11 +23,11 @@ import { site } from '../data/site';
   .consent {
     position: fixed; z-index: 150; left: var(--gutter); right: var(--gutter); bottom: var(--gutter);
     max-width: 44rem; margin-left: auto;
-    background: var(--c-paper); color: var(--c-ink); border: 1px solid var(--c-ink);
+    background: var(--c-white); color: var(--c-ink); border: 2px solid var(--c-indigo); border-radius: 14px; box-shadow: 0 12px 30px rgba(20, 27, 74, 0.18);
     padding: var(--s-5); display: grid; grid-template-columns: 1fr auto; gap: var(--s-5); align-items: center;
   }
   .consent[hidden] { display: none; }
-  h2 { font-size: 1.25rem; margin-bottom: var(--s-2); }
+  h2 { font-size: 1.35rem; line-height: 1.1; margin-bottom: var(--s-2); }
   p { font-size: var(--t-sm); color: var(--c-muted); }
   .actions { display: flex; gap: var(--s-3); }
   /* Identical styling for both buttons: no nudging toward "Accept". */

@@ -18,7 +18,7 @@ const base = home ? '' : '/';
       <ul role="list">
         {site.nav.map((item) => <li><a href={`${base}${item.href}`}>{item.label}</a></li>)}
       </ul>
-      <a class="btn btn--primary btn--sm btn--plain" href={`${base}#contact`}>Request assessment</a>
+      <a class="btn btn--primary btn--sm" href={`${base}#contact`}>{site.cta}</a>
     </nav>
   </div>
 </header>
@@ -26,23 +26,20 @@ const base = home ? '' : '/';
 <style>
   .site-header {
     position: sticky; top: 0; z-index: 100; height: var(--header-h);
-    background: var(--c-ivory);
+    background: var(--c-white);
     border-bottom: 1px solid transparent;
     transition: border-color var(--dur-fast) var(--ease);
   }
   .site-header[data-scrolled] { border-bottom-color: var(--c-line); }
   .inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--s-5); }
-  .wordmark {
-    font-family: var(--f-serif); font-size: 1.6rem; font-weight: 420; letter-spacing: -0.02em; text-decoration: none;
-    font-variation-settings: 'opsz' 144;
-  }
+  .wordmark { font-weight: 800; font-stretch: 75%; font-size: 1.9rem; letter-spacing: -0.01em; text-decoration: none; color: var(--c-indigo); }
   .nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
   .nav ul { display: flex; gap: clamp(0.9rem, 1.8vw, 1.9rem); }
   .nav li a {
-    font-size: var(--t-sm); font-weight: 480; text-decoration: none; padding-block: 0.5rem; position: relative;
+    font-size: var(--t-sm); font-weight: 600; text-decoration: none; padding-block: 0.5rem; position: relative;
   }
   .nav li a::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: 0.2rem; height: 1px; background: var(--c-brass-deep);
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0.1rem; height: 3px; background: var(--c-marigold);
     transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease);
   }
   .nav li a:hover::after, .nav li a[aria-current='true']::after { transform: scaleX(1); }
@@ -55,7 +52,7 @@ const base = home ? '' : '/';
       background: none; border: 0; cursor: pointer;
     }
     .bars, .bars::before, .bars::after {
-      display: block; width: 1.5rem; height: 1.5px; background: var(--c-ink); transition: transform var(--dur-fast) var(--ease);
+      display: block; width: 1.5rem; height: 2.5px; background: var(--c-indigo); transition: transform var(--dur-fast) var(--ease);
     }
     .bars { position: relative; }
     .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
@@ -66,7 +63,7 @@ const base = home ? '' : '/';
     .toggle[aria-expanded='true'] .bars::after { transform: translateY(-6px) rotate(-45deg); }
 
     :global(.js) .nav {
-      position: fixed; inset: var(--header-h) 0 0 0; background: var(--c-ivory);
+      position: fixed; inset: var(--header-h) 0 0 0; background: var(--c-white);
       flex-direction: column; align-items: flex-start; justify-content: space-between;
       padding: var(--s-6) var(--gutter) var(--s-7); overflow-y: auto;
       visibility: hidden; opacity: 0; transform: translateY(-8px);
@@ -75,7 +72,7 @@ const base = home ? '' : '/';
     :global(.js) .nav[data-open] { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
     :global(.js) .nav ul { flex-direction: column; gap: 0; width: 100%; }
     :global(.js) .nav li { border-bottom: 1px solid var(--c-line); }
-    :global(.js) .nav li a { display: block; font-family: var(--f-serif); font-size: 1.75rem; padding-block: 0.9rem; }
+    :global(.js) .nav li a { display: block; font-weight: 800; font-stretch: 75%; font-size: 2rem; color: var(--c-indigo); padding-block: 0.8rem; }
     :global(.js) .nav li a::after { content: none; }
     :global(.js) .nav .btn { width: 100%; justify-content: center; margin-top: var(--s-6); }
 

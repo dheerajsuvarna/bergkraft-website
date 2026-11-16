@@ -5,14 +5,13 @@ const { home = false } = Astro.props;
 const base = home ? '' : '/';
 const year = new Date().getFullYear();
 ---
-<footer class="footer bg-ink on-dark">
+<footer class="footer on-dark">
   <div class="container">
-    <p class="mark" aria-hidden="true">Bergkraft</p>
-
+    
     <div class="grid cols">
       <div class="about">
         <p><strong>{site.legalName}</strong></p>
-        <p class="muted">Independent buyer-side sourcing and procurement partner in India for rice and green coffee.</p>
+        <p class="muted">Your sourcing team in India for rice and green coffee. Paid by the buyer, not the supplier.</p>
         <p class="muted">Berlin, Germany and Mangalore, India</p>
       </div>
       <nav aria-label="Footer">
@@ -24,11 +23,7 @@ const year = new Date().getFullYear();
         <ul role="list">
           <li><a class="link" href={`mailto:${site.email}`}>{site.email}</a></li>
           {site.phones.map((p) => <li><a class="link" href={p.href} rel="noopener">{p.display}</a> <span class="muted small">{p.office}</span></li>)}
-          <li>
-            {site.linkedinCompany
-              ? <a class="link" href={site.linkedinCompany} rel="noopener">LinkedIn</a>
-              : <span class="muted small">LinkedIn page: link to be added</span>}
-          </li>
+          {site.linkedinCompany && <li><a class="link" href={site.linkedinCompany} rel="noopener">LinkedIn</a></li>}
         </ul>
       </div>
     </div>
@@ -46,22 +41,20 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .footer { padding-block: var(--s-8) var(--s-6); }
-  .mark {
-    font-family: var(--f-serif); font-weight: 300; font-size: clamp(4rem, 17vw, 16rem); line-height: 0.85; letter-spacing: -0.04em;
-    color: transparent; -webkit-text-stroke: 1px var(--c-line-on-dark); margin-bottom: var(--s-8); user-select: none;
-  }
+  .footer { background: var(--c-indigo-deep); padding-block: var(--s-8) var(--s-6); }
+  .cols { row-gap: var(--s-6); }
   .cols > * { grid-column: span 4; }
   .about { display: grid; gap: var(--s-3); align-content: start; max-width: 24rem; }
+  .about strong { font-size: var(--t-h3); font-weight: 800; font-stretch: 75%; }
   li { padding-block: 0.3rem; }
   nav ul { columns: 2; }
   .small { font-size: var(--t-xs); }
   .legal {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-3) var(--s-5);
-    margin-top: var(--s-8); padding-top: var(--s-5); border-top: 1px solid var(--c-line-on-dark); font-size: var(--t-sm);
+    margin-top: var(--s-8); padding-top: var(--s-5); border-top: 2px solid var(--c-line-on-dark); font-size: var(--t-sm);
   }
   .legal ul { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
   .legal li { padding: 0; }
-  button.link { border: 0; cursor: pointer; padding: 0 0 2px; color: inherit; background-color: transparent; }
-  @media (max-width: 52rem) { .cols > * { grid-column: 1 / -1; margin-bottom: var(--s-6); } }
+  button.link { border: 0; cursor: pointer; padding: 0; color: inherit; background: transparent; }
+  @media (max-width: 52rem) { .cols > * { grid-column: 1 / -1; } }
 </style>

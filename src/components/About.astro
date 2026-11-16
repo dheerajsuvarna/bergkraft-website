@@ -1,0 +1,59 @@
+---
+import { site } from '../data/site';
+---
+<section class="section" id="about">
+  <div class="container grid">
+    <div class="places">
+      <h2>Close to you in Europe. Close to the source in India.</h2>
+      <div class="cities">
+        <div>
+          <h3>Berlin, Germany</h3>
+          <p class="muted">You deal with us in Europe, in your working day and in clear commercial terms.</p>
+        </div>
+        <div>
+          <h3>Mangalore, India</h3>
+          <p class="muted">Suppliers deal with us in India, in theirs. Mangalore is on the coast of Karnataka, the state where most Indian coffee is grown.</p>
+        </div>
+      </div>
+      <p class="muted small">
+        Buying from another continent takes more than a supplier’s phone number. It takes local
+        understanding, clear communication and someone coordinating the commercial details.
+      </p>
+    </div>
+
+    <div class="founder">
+      {site.founderPhoto && <img src={site.founderPhoto} alt={`${site.founder}, founder of Bergkraft`} width="800" height="1000" loading="lazy" decoding="async" />}
+      <blockquote>
+        <p>
+          Bergkraft was founded around a simple idea: international buyers deserve an independent procurement
+          partner in India who works for their interests.
+        </p>
+        <p>
+          My background in product management and supply chain technology has shaped the way I approach
+          procurement: clear requirements, structured decisions, transparent commercial terms and
+          accountability.
+        </p>
+      </blockquote>
+      <p class="who">
+        <strong>{site.founder}</strong>
+        Founder. From Mangalore, based in Germany. Background in product management, supply chain and trade
+        finance software.
+      </p>
+      {site.linkedinFounder && <a class="link" href={site.linkedinFounder} rel="noopener">LinkedIn profile</a>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { row-gap: var(--s-7); align-items: start; }
+  .places { grid-column: 1 / span 6; display: grid; gap: var(--s-6); }
+  .cities { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); }
+  .cities div { border-top: 3px solid var(--c-indigo); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
+  .founder { grid-column: 8 / -1; background: var(--c-tint); border-radius: 14px; padding: clamp(1.5rem, 3.5vw, 2.75rem); display: grid; gap: var(--s-5); justify-items: start; }
+  .founder img { width: 9rem; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+  blockquote { display: grid; gap: var(--s-4); font-size: var(--t-lg); line-height: 1.4; }
+  .who strong { display: block; font-size: var(--t-h3); font-stretch: 88%; color: var(--c-indigo); }
+  .who { font-size: var(--t-sm); color: var(--c-muted); }
+  @media (max-width: 62rem) { .places, .founder { grid-column: 1 / -1; } }
+  @media (max-width: 30rem) { .cities { grid-template-columns: 1fr; } }
+</style>

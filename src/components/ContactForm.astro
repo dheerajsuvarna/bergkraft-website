@@ -6,16 +6,15 @@
 //   success or error message. Without it, the form posts normally to /thank-you/.
 import { site } from '../data/site';
 ---
-<section class="section bg-forest on-dark" id="contact">
+<section class="section section--indigo on-dark" id="contact">
   <div class="container grid">
     <div class="intro">
-      <p class="eyebrow" data-reveal><span>12</span> Request an assessment</p>
-      <h2 data-reveal>Tell us what you need to <em>source from India.</em></h2>
-      <p class="lead" data-reveal>
+      <h2>Tell us what you need to source from India.</h2>
+      <p class="lead">
         Share your product specifications, quantity and destination. We will assess your requirement and
         discuss how Bergkraft can support your procurement.
       </p>
-      <dl class="direct" data-reveal>
+      <dl class="direct">
         <div><dt>Email</dt><dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
         {site.phones.map((p) => (
           <div><dt>{p.office} ({p.note})</dt><dd><a class="link" href={p.href} rel="noopener">{p.display}</a></dd></div>
@@ -23,7 +22,7 @@ import { site } from '../data/site';
       </dl>
     </div>
 
-    <div class="panel" data-reveal>
+    <div class="panel">
       <form name="sourcing-enquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form novalidate>
         <input type="hidden" name="form-name" value="sourcing-enquiry" />
         <p class="hp"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
@@ -90,38 +89,35 @@ import { site } from '../data/site';
 
 <style>
   .intro { grid-column: 1 / span 5; display: grid; gap: var(--s-5); align-content: start; }
-  .direct { margin-top: var(--s-5); border-top: 1px solid var(--c-line-on-dark); }
-  .direct div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-4); padding-block: var(--s-3); border-bottom: 1px solid var(--c-line-on-dark); }
-  .direct dt { font-size: var(--t-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-brass-light); }
+  .direct { margin-top: var(--s-4); }
+  .direct div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-1) var(--s-4); padding-block: var(--s-3); border-top: 2px solid var(--c-line-on-dark); }
+  .direct dt { color: var(--c-muted-on-dark); }
+  .direct dd { font-weight: 600; }
 
-  .panel { grid-column: 7 / -1; background: var(--c-ivory); color: var(--c-ink); padding: clamp(1.5rem, 4vw, 3.25rem); }
-  fieldset { border: 0; padding: 0; margin: 0 0 var(--s-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5) var(--s-5); }
-  legend { font-family: var(--f-serif); font-size: 1.5rem; padding: 0; margin-bottom: var(--s-4); }
-  .field { display: grid; gap: var(--s-1); align-content: start; }
+  .panel { grid-column: 7 / -1; background: var(--c-white); color: var(--c-ink); border-radius: 14px; padding: clamp(1.25rem, 3.5vw, 3rem); }
+  fieldset { border: 0; padding: 0; margin: 0 0 var(--s-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4) var(--s-5); }
+  legend { font-size: var(--t-h3); font-weight: 800; font-stretch: 75%; color: var(--c-indigo); padding: 0; margin-bottom: var(--s-4); }
+  .field { display: grid; gap: 0.35rem; align-content: start; }
   .wide { grid-column: 1 / -1; }
-  label { font-size: var(--t-sm); font-weight: 520; }
+  label { font-size: var(--t-sm); font-weight: 600; }
   .opt { font-weight: 400; color: var(--c-muted); font-size: var(--t-xs); margin-left: 0.4em; }
   input:not([type='checkbox']), select, textarea {
-    width: 100%; min-height: 2.9rem; padding: 0.6rem 0; background: transparent;
-    border: 0; border-bottom: 1px solid var(--c-ink); border-radius: 0;
-    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+    width: 100%; min-height: 3rem; padding: 0.6rem 0.75rem; background: var(--c-white);
+    border: 2px solid var(--c-line); border-radius: var(--radius);
   }
   textarea { resize: vertical; }
-  input:not([type='checkbox']):focus-visible, select:focus-visible, textarea:focus-visible {
-    outline: none; border-color: var(--c-forest); box-shadow: 0 2px 0 var(--c-forest);
-  }
+  input:not([type='checkbox']):focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--c-marigold); outline-offset: 0; border-color: var(--c-indigo); }
   :global([aria-invalid='true']) { border-color: var(--c-error) !important; }
-  :global(.field-error) { color: var(--c-error); font-size: var(--t-xs); }
+  :global(.field-error) { color: var(--c-error); font-size: var(--t-xs); font-weight: 600; }
   .hp { position: absolute; left: -9999px; }
   .consent { display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); font-weight: 400; margin-bottom: var(--s-5); }
-  .consent input { width: 1.25rem; height: 1.25rem; margin-top: 0.15rem; accent-color: var(--c-forest); }
-  .status { border: 1px solid var(--c-error); color: var(--c-error); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: var(--t-sm); }
+  .consent input { width: 1.35rem; height: 1.35rem; margin-top: 0.1rem; accent-color: var(--c-indigo); }
+  .status { border: 2px solid var(--c-error); border-radius: var(--radius); color: var(--c-error); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: var(--t-sm); font-weight: 600; }
   .done { display: grid; gap: var(--s-3); }
   .done[hidden], .status[hidden] { display: none; }
-  .panel .btn--primary { background: var(--c-forest); color: var(--c-ivory); border-color: var(--c-forest); }
-  .panel .btn--primary:hover { background: var(--c-botanical); border-color: var(--c-botanical); }
+  .panel .btn--primary:hover { background: var(--c-indigo); border-color: var(--c-indigo); color: var(--c-white); }
   .panel .btn[disabled] { opacity: 0.6; cursor: progress; }
-  .panel :global(:focus-visible) { outline-color: var(--c-brass-deep); }
+  .panel :global(:focus-visible) { outline-color: var(--c-indigo); }
 
   @media (max-width: 62rem) { .intro, .panel { grid-column: 1 / -1; } .panel { margin-top: var(--s-7); } }
   @media (max-width: 36rem) { fieldset { grid-template-columns: 1fr; } }

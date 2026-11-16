@@ -1,0 +1,107 @@
+---
+// The hero graphic: an export sack with an example marking, drawn in CSS.
+// It switches between a rice and a coffee marking. The markings are examples
+// and are labelled as such; they do not depict a real shipment.
+const bags = [
+  {
+    id: 'rice',
+    tab: 'Rice',
+    lines: ['Indian Basmati Rice', '1121 Sella'],
+    meta: ['Net wt 25 kg', 'Product of India'],
+    forWhom: 'Your company, Hamburg',
+  },
+  {
+    id: 'coffee',
+    tab: 'Coffee',
+    lines: ['India Robusta', 'Parchment AB'],
+    meta: ['Net wt 60 kg', 'Produce of India'],
+    forWhom: 'Your roastery, Rotterdam',
+  },
+];
+const checks = ['Supplier vetted', 'Price benchmarked', 'Sample approved', 'Inspected before loading'];
+---
+<div class="bag-wrap" data-bags>
+  <div class="tabs" role="tablist" aria-label="Example bag marking">
+    {bags.map((b, i) => (
+      <button type="button" role="tab" id={`tab-${b.id}`} aria-controls={`bag-${b.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+        {b.tab}
+      </button>
+    ))}
+  </div>
+
+  <div class="bag">
+    <div class="seam" aria-hidden="true"></div>
+    {bags.map((b, i) => (
+      <div class="marking" role="tabpanel" id={`bag-${b.id}`} aria-labelledby={`tab-${b.id}`} hidden={i !== 0}>
+        <p class="product">{b.lines.map((l) => <span>{l}</span>)}</p>
+        <p class="meta">{b.meta.map((m) => <span>{m}</span>)}</p>
+        <p class="for"><span>Packed for</span>{b.forWhom}</p>
+      </div>
+    ))}
+
+    <!-- The inspection tag: what Bergkraft does before anything is loaded. -->
+    <div class="tag">
+      <span class="hole" aria-hidden="true"></span>
+      <p class="tag-title">Bergkraft</p>
+      <ul role="list">
+        {checks.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </div>
+  <p class="caption">Example marking. Your product and specification go here.</p>
+</div>
+
+<style>
+  .bag-wrap { display: grid; gap: var(--s-4); justify-items: start; padding-bottom: 1.75rem; }
+  .tabs { display: inline-flex; border: 2px solid var(--c-indigo); border-radius: var(--radius); overflow: hidden; }
+  .tabs button {
+    border: 0; background: var(--c-white); color: var(--c-indigo); cursor: pointer;
+    padding: 0.5rem 1.25rem; min-height: 2.75rem; font-weight: 700; font-stretch: 92%;
+  }
+  .tabs button[aria-selected='true'] { background: var(--c-indigo); color: var(--c-white); }
+  .tabs button:focus-visible { outline-offset: -4px; outline-color: var(--c-marigold); }
+
+  .bag {
+    position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 34rem;
+    border-radius: 14px 14px 22px 22px;
+    background-color: var(--c-jute);
+    /* Woven jute: two fine crossing line patterns. */
+    background-image:
+      repeating-linear-gradient(0deg, rgba(120, 90, 40, 0.16) 0 2px, transparent 2px 6px),
+      repeating-linear-gradient(90deg, rgba(120, 90, 40, 0.12) 0 2px, transparent 2px 6px);
+    padding: clamp(1.5rem, 5vw, 3rem);
+    display: grid; align-content: start; padding-top: clamp(2.75rem, 6vw, 3.75rem);
+  }
+  .seam { position: absolute; left: 6%; right: 6%; top: 1.1rem; border-top: 3px dashed var(--c-jute-dark); }
+
+  .marking { display: grid; gap: clamp(1rem, 3vw, 1.75rem); color: var(--c-indigo); font-family: var(--f-stencil); text-transform: uppercase; }
+  .marking[hidden] { display: none; }
+  .product { font-weight: 800; font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4.1rem); line-height: 0.92; letter-spacing: 0.01em; }
+  .product span, .meta span { display: block; }
+  .meta { font-weight: 600; font-size: clamp(1.15rem, 0.8rem + 1.6vw, 1.75rem); line-height: 1.1; letter-spacing: 0.04em; }
+  .for {
+    font-weight: 700; font-size: clamp(1.15rem, 0.8rem + 1.6vw, 1.75rem); line-height: 1.1; letter-spacing: 0.03em;
+    border: 3px solid var(--c-indigo); padding: 0.6rem 0.9rem; justify-self: start; max-width: 52%;
+  }
+  .for span { display: block; font-size: 0.6em; font-weight: 600; letter-spacing: 0.1em; }
+
+  .tag {
+    position: absolute; right: -0.5rem; bottom: -1.75rem; width: min(14rem, 46%);
+    background: var(--c-marigold); color: var(--c-indigo-deep);
+    padding: 2.4rem 1.1rem 1.1rem; border-radius: 4px; transform: rotate(4deg);
+    box-shadow: 0 10px 0 -4px rgba(20, 27, 74, 0.18);
+  }
+  .hole { position: absolute; top: 0.8rem; left: 50%; width: 0.9rem; height: 0.9rem; margin-left: -0.45rem; border-radius: 50%; background: var(--c-jute); }
+  .tag-title { font-weight: 800; font-stretch: 75%; font-size: 1.35rem; line-height: 1; margin-bottom: 0.6rem; }
+  .tag li { display: flex; gap: 0.5rem; align-items: baseline; font-weight: 600; font-size: var(--t-sm); line-height: 1.25; padding-block: 0.3rem; border-top: 1.5px solid rgba(20, 27, 74, 0.25); }
+  .tag li::before { content: '\2713'; font-weight: 800; }
+  .caption { font-size: var(--t-xs); color: var(--c-muted); max-width: 55%; }
+
+  @media (max-width: 30rem) {
+    .tag { position: static; width: auto; transform: rotate(1.5deg); margin-top: var(--s-5); }
+    .bag { aspect-ratio: auto; }
+    .for { max-width: none; }
+    .caption { max-width: none; }
+    .bag-wrap { padding-bottom: 0; }
+  }
+</style>

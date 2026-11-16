@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import BuyerPromise from '../components/BuyerPromise.astro';
-import Problems from '../components/Problems.astro';
-import Process from '../components/Process.astro';
-import Benchmark from '../components/Benchmark.astro';
-import Rice from '../components/Rice.astro';
-import Coffee from '../components/Coffee.astro';
-import Verification from '../components/Verification.astro';
-import Pricing from '../components/Pricing.astro';
-import Locations from '../components/Locations.astro';
-import Founder from '../components/Founder.astro';
+import Steps from '../components/Steps.astro';
+import Trust from '../components/Trust.astro';
+import Products from '../components/Products.astro';
+import Price from '../components/Price.astro';
+import About from '../components/About.astro';
 import FAQ from '../components/FAQ.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
@@ -26,7 +21,7 @@ const org = {
   alternateName: site.brand,
   url: site.url,
   email: site.email,
-  description: 'Independent buyer-side sourcing and procurement partner in India for rice and green coffee.',
+  description: 'Sourcing team in India for rice and green coffee, working for international buyers and paid by the buyer.',
   founder: { '@type': 'Person', name: site.founder },
   location: [
     { '@type': 'Place', name: 'Berlin, Germany' },
@@ -66,16 +61,11 @@ const faqPage = {
 ---
 <BaseLayout home schema={[org, website, service, faqPage]}>
   <Hero />
-  <BuyerPromise />
-  <Problems />
-  <Process />
-  <Benchmark />
-  <Rice />
-  <Coffee />
-  <Verification />
-  <Pricing />
-  <Locations />
-  <Founder />
+  <Steps />
+  <Trust />
+  <Products />
+  <Price />
+  <About />
   <FAQ />
   <ContactForm />
 </BaseLayout>

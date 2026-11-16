@@ -1,0 +1,52 @@
+---
+const commitments = [
+  { t: 'No supplier commissions', d: 'Our only income is the fee you agree with us. We take nothing from the seller.' },
+  { t: 'You see every offer', d: 'Quotations are shown to you side by side, on the same grade, Incoterm and date.' },
+  { t: 'You know what was checked', d: 'Each supplier report states whether we reviewed documents, assessed remotely or visited in person.' },
+  { t: 'Inspection before loading', d: 'Where you agree to it, an independent agency inspects and tests the goods before they ship.' },
+];
+---
+<section class="section" id="trust">
+  <div class="container grid">
+    <div class="claim">
+      <h2>You pay us. Not the supplier.</h2>
+      <p class="lead">
+        Many intermediaries in this trade earn a commission from the seller. We are hired and paid by the
+        buyer, so every comparison and every negotiation is done with one interest in mind: yours.
+      </p>
+    </div>
+
+    <ul class="list" role="list">
+      {commitments.map((c) => (
+        <li>
+          <span class="tick" aria-hidden="true">&#10003;</span>
+          <div>
+            <h3>{c.t}</h3>
+            <p class="muted">{c.d}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <p class="limits">
+      Vetting lowers risk. It cannot remove it. We will always tell you what has not been verified, and we
+      do not guarantee a supplier’s performance or compliance with every rule in your market.
+    </p>
+  </div>
+</section>
+
+<style>
+  .grid { row-gap: var(--s-7); }
+  .claim { grid-column: 1 / span 6; display: grid; gap: var(--s-5); align-content: start; }
+  .claim h2 { font-size: clamp(2.75rem, 1.4rem + 6vw, 6rem); }
+  .list { grid-column: 8 / -1; display: grid; gap: var(--s-5); }
+  li { display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--s-4); align-items: start; }
+  .tick {
+    display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--radius);
+    background: var(--c-marigold); color: var(--c-indigo-deep); font-weight: 800; font-size: 1.25rem;
+  }
+  h3 { margin-bottom: var(--s-1); }
+  .limits { grid-column: 1 / span 7; font-size: var(--t-sm); color: var(--c-muted); border-left: 6px solid var(--c-tint); padding-left: var(--s-4); }
+
+  @media (max-width: 62rem) { .claim, .list, .limits { grid-column: 1 / -1; } }
+</style>

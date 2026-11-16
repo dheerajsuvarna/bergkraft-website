@@ -1,0 +1,113 @@
+---
+// How Bergkraft works on price, and how it charges.
+// Illustrative example: derived values are calculated so the figures always add up.
+const ex = { benchmark: 1000, negotiated: 975, quantity: 25, share: 0.2 };
+const gross = (ex.benchmark - ex.negotiated) * ex.quantity;
+const fee = gross * ex.share;
+const retained = gross - fee;
+const usd = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+const how = [
+  { t: 'We agree the starting point first', d: 'Before any negotiation, we document a benchmark price for your exact specification and you approve it.' },
+  { t: 'We compare like with like', d: 'Offers are only compared on the same grade, origin, processing, quantity, packaging, Incoterm, destination, payment terms and date.' },
+  { t: 'We negotiate for you', d: 'With the benchmark and competing offers in hand, we negotiate price and terms on your behalf.' },
+];
+const fees = [
+  { kind: 'Fixed', t: 'Sourcing assessment', d: 'For defined initial work: your requirement, the market and realistic supplier options.' },
+  { kind: 'Fixed', t: 'Procurement mandate', d: 'For the agreed assignment, from supplier vetting and negotiation to order follow-up.' },
+  { kind: 'Performance', t: 'Share of verified savings', d: 'An agreed share of what we save you below the benchmark. 20% is used here as an example.' },
+];
+---
+<section class="section section--tint" id="pricing">
+  <div class="container">
+    <div class="section-intro">
+      <h2>We earn more only when you pay less.</h2>
+      <p class="lead">
+        Our aim is the best price available for your specification, without trading down on quality. Our fee
+        is built so that we share that aim.
+      </p>
+    </div>
+
+    <div class="grid top">
+      <ol class="how" role="list">
+        {how.map((h, i) => (
+          <li>
+            <span class="n" aria-hidden="true">{i + 1}</span>
+            <div><h3>{h.t}</h3><p class="muted">{h.d}</p></div>
+          </li>
+        ))}
+      </ol>
+
+      <figure class="sheet" aria-labelledby="ex-title">
+        <figcaption>
+          <strong id="ex-title">Illustrative example</strong>
+          <span>Illustrative example only. Not an actual quotation, achieved saving or guaranteed outcome.</span>
+        </figcaption>
+        <dl>
+          <div><dt>Agreed benchmark</dt><dd>{usd(ex.benchmark)}/MT</dd></div>
+          <div><dt>Negotiated price</dt><dd>{usd(ex.negotiated)}/MT</dd></div>
+          <div><dt>Quantity</dt><dd>{ex.quantity} MT</dd></div>
+          <div><dt>Gross price difference</dt><dd>{usd(gross)}</dd></div>
+          <div><dt>Illustrative performance fee at {ex.share * 100}%</dt><dd>{usd(fee)}</dd></div>
+          <div class="total"><dt>Buyer retains</dt><dd>{usd(retained)}</dd></div>
+        </dl>
+      </figure>
+    </div>
+
+    <p class="refs muted">
+      Benchmarks draw on FAO rice market information and APEDA information for rice, and on International
+      Coffee Organization indicators, ICE Arabica and Robusta futures and Indian Coffee Board information for
+      coffee, together with comparable Indian supplier and exporter quotations. These are reference points,
+      not direct physical shipment prices. Savings cannot be claimed when they result from inferior quality,
+      reduced specifications, a lower grade or general market movements unrelated to the agreed negotiation
+      methodology.
+    </p>
+
+    <h3 class="fees-title">What you pay us</h3>
+    <ul class="fees" role="list">
+      {fees.map((f) => (
+        <li>
+          <span class:list={['kind', { perf: f.kind === 'Performance' }]}>{f.kind}</span>
+          <h4>{f.t}</h4>
+          <p class="muted">{f.d}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="small muted terms">
+      Fee amounts depend on product, volume and scope and are agreed in writing before work begins. Sample,
+      courier, testing, inspection and other third-party costs are agreed separately. We do not guarantee
+      savings.
+    </p>
+  </div>
+</section>
+
+<style>
+  .top { row-gap: var(--s-7); align-items: start; }
+  .how { grid-column: 1 / span 6; display: grid; gap: var(--s-6); }
+  .how li { display: grid; grid-template-columns: 3rem 1fr; gap: var(--s-4); }
+  .n { font-weight: 800; font-stretch: 75%; font-size: 3rem; line-height: 0.85; color: var(--c-indigo); }
+  .how h3 { margin-bottom: var(--s-1); }
+
+  .sheet { grid-column: 8 / -1; background: var(--c-white); border-radius: 14px; padding: clamp(1.25rem, 3vw, 2.25rem); }
+  figcaption { display: grid; gap: var(--s-2); margin-bottom: var(--s-4); }
+  figcaption strong { justify-self: start; background: var(--c-marigold); color: var(--c-indigo-deep); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: var(--t-sm); }
+  figcaption span { font-size: var(--t-xs); color: var(--c-muted); }
+  .sheet div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding-block: 0.7rem; border-top: 2px solid var(--c-tint); }
+  .sheet dd { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sheet .total { border-top: 3px solid var(--c-indigo); margin-top: var(--s-2); }
+  .sheet .total dt { font-weight: 700; }
+  .sheet .total dd { font-weight: 800; font-stretch: 75%; font-size: clamp(2.25rem, 1.6rem + 2.5vw, 3.5rem); line-height: 1; color: var(--c-indigo); }
+
+  .refs { margin-top: var(--s-7); font-size: var(--t-sm); max-width: 62rem; columns: 2; column-gap: clamp(1rem, 2.4vw, 2.5rem); }
+
+  .fees-title { margin-top: var(--s-8); margin-bottom: var(--s-5); font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); font-weight: 800; font-stretch: 75%; color: var(--c-indigo); }
+  .fees { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2.4vw, 2.5rem); }
+  .fees li { display: grid; gap: var(--s-2); align-content: start; justify-items: start; border-top: 3px solid var(--c-indigo); padding-top: var(--s-4); }
+  .kind { font-size: var(--t-xs); font-weight: 700; border: 2px solid var(--c-indigo); border-radius: 999px; padding: 0.1rem 0.7rem; }
+  .kind.perf { background: var(--c-marigold); border-color: var(--c-marigold); color: var(--c-indigo-deep); }
+  h4 { font-size: var(--t-h3); font-weight: 700; font-stretch: 88%; line-height: 1.15; }
+  .terms { margin-top: var(--s-5); max-width: 46rem; }
+
+  @media (max-width: 62rem) { .how, .sheet { grid-column: 1 / -1; } .refs { columns: 1; } }
+  @media (max-width: 48rem) { .fees { grid-template-columns: 1fr; } }
+</style>

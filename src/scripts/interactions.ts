@@ -1,6 +1,6 @@
 // All client-side behaviour for the site. Deliberately small and dependency-free.
-// Sections: header, mobile navigation, scroll reveal, number count-up,
-// enquiry form, analytics consent.
+// Sections: header, mobile navigation, bag marking tabs, enquiry form,
+// analytics consent.
 
 declare global {
   interface Window {
@@ -9,7 +9,6 @@ declare global {
   }
 }
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = <T extends HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends HTMLElement>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
 
@@ -49,36 +48,30 @@ if ('IntersectionObserver' in window && navLinks.length) {
   navLinks.forEach((a) => { const s = document.getElementById(a.hash.slice(1)); if (s) spy.observe(s); });
 }
 
-/* Scroll reveal and count-up ------------------------------------------------ */
-function countUp(el: HTMLElement) {
-  const target = Number(el.dataset.count);
-  const prefix = el.dataset.prefix ?? '';
-  const format = (n: number) => prefix + Math.round(n).toLocaleString('en-US');
-  if (reduceMotion || !Number.isFinite(target)) { el.textContent = format(target); return; }
-  const start = performance.now(), duration = 1200, from = target * 0.6;
-  const tick = (now: number) => {
-    const t = Math.min(1, (now - start) / duration);
-    const eased = 1 - Math.pow(1 - t, 3);
-    el.textContent = format(from + (target - from) * eased);
-    if (t < 1) requestAnimationFrame(tick);
+/* Bag marking tabs (hero) --------------------------------------------------- */
+const bags = $('[data-bags]');
+if (bags) {
+  const tabs = $$<HTMLButtonElement>('[role="tab"]', bags);
+  const select = (tab: HTMLButtonElement, focus = false) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      const panel = document.getElementById(t.getAttribute('aria-controls') ?? '');
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tab.focus();
   };
-  requestAnimationFrame(tick);
-}
-
-const revealEls = $$('[data-reveal]');
-if (reduceMotion || !('IntersectionObserver' in window)) {
-  revealEls.forEach((el) => el.classList.add('is-visible'));
-} else {
-  const io = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      const el = entry.target as HTMLElement;
-      el.classList.add('is-visible');
-      $$('[data-count]', el).forEach(countUp);
-      io.unobserve(el);
-    }
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-  revealEls.forEach((el) => io.observe(el));
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    // Arrow keys move between tabs, as expected for a tab list.
+    tab.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      if (next) select(next, true);
+    });
+  });
 }
 
 /* Enquiry form (Netlify Forms) --------------------------------------------- */
