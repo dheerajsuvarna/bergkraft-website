@@ -1,0 +1,97 @@
+---
+import Art from './Art.astro';
+import { images } from '../data/site';
+
+const facts = [
+  { k: 'Who we represent', v: 'The buyer. Our fees are paid by you, not by suppliers.' },
+  { k: 'What we source', v: 'Indian Basmati and non-Basmati rice. Arabica and Robusta green coffee.' },
+  { k: 'How we charge', v: 'Fixed fees for defined work, plus an agreed share of verified savings.' },
+  { k: 'Where we are', v: 'Berlin, Germany and Mangalore, India.' },
+];
+---
+<section class="hero" id="top">
+  <div class="container grid">
+    <div class="copy">
+      <p class="eyebrow" data-reveal>Independent buyer-side procurement</p>
+      <h1 data-reveal style="--delay:.08s">Your procurement desk in India. <em>Working for your interests.</em></h1>
+      <p class="lead" data-reveal style="--delay:.16s">
+        We help international buyers identify Indian suppliers, benchmark prices, negotiate commercial terms
+        and coordinate procurement across rice and green coffee.
+      </p>
+      <div class="actions" data-reveal style="--delay:.24s">
+        <a class="btn btn--primary" href="#contact">Request a sourcing assessment</a>
+        <a class="btn" href="#approach">Discover our procurement approach</a>
+      </div>
+    </div>
+
+    <div class="visual" data-reveal style="--delay:.2s">
+      <Art class="tall" image={images.heroRice} alt="Close view of long-grain Indian rice" eager />
+      <Art class="inset" image={images.heroCoffee} alt="Close view of unroasted green coffee beans" eager />
+      <!-- The line between the two cities: the only decoration in the hero. -->
+      <div class="route" aria-hidden="true">
+        <span>Mangalore 12.9°N</span><i></i><span>Berlin 52.5°N</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <dl class="facts">
+      {facts.map((f, i) => (
+        <div data-reveal style={`--delay:${0.1 * i}s`}>
+          <dt>{f.k}</dt>
+          <dd>{f.v}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero { padding-top: clamp(2.5rem, 6vw, 6rem); padding-bottom: var(--s-8); }
+  .copy { grid-column: 1 / span 7; display: grid; gap: var(--s-6); align-content: center; padding-bottom: var(--s-7); }
+  .copy h1 { max-width: 11em; }
+  .copy .lead { max-width: 27em; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--s-4); }
+
+  .visual { grid-column: 9 / span 4; position: relative; padding-bottom: 18%; }
+  .visual :global(.tall) { aspect-ratio: 3 / 4; }
+  .visual :global(.inset) {
+    position: absolute; width: 62%; aspect-ratio: 1; left: -26%; bottom: 0;
+    outline: 10px solid var(--c-ivory);
+  }
+  .visual :global(.tall figcaption) { inset: 0 0 auto auto; }
+  .route {
+    position: absolute; right: 0; bottom: 4%; left: 42%;
+    display: flex; align-items: center; gap: var(--s-3);
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-brass-deep); white-space: nowrap;
+  }
+  .route i { flex: 1; height: 1px; background: var(--c-brass); transform-origin: left; animation: draw 1.6s var(--ease) 0.6s both; }
+  @keyframes draw { from { transform: scaleX(0); } }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--s-8);
+    border-top: 1px solid var(--c-ink);
+  }
+  .facts > div { padding: var(--s-5) var(--s-5) 0 0; }
+  .facts > div + div { border-left: 1px solid var(--c-line); padding-left: var(--s-5); }
+  dt { font-size: var(--t-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-brass-deep); margin-bottom: var(--s-2); }
+  dd { font-family: var(--f-serif); font-size: 1.15rem; line-height: 1.35; }
+
+  @media (max-width: 80rem) { .route { display: none; } }
+  @media (max-width: 62rem) {
+    .copy { grid-column: 1 / -1; padding-bottom: var(--s-6); }
+    .visual { grid-column: 3 / -1; }
+    .facts { grid-template-columns: repeat(2, 1fr); }
+    .facts > div { padding-bottom: var(--s-5); }
+    .facts > div:nth-child(3) { border-left: 0; padding-left: 0; }
+    .facts > div:nth-child(n + 3) { border-top: 1px solid var(--c-line); }
+  }
+  @media (max-width: 36rem) {
+    .visual { grid-column: 4 / -1; }
+    .route { display: none; }
+    .actions .btn { width: 100%; justify-content: space-between; }
+    .facts { grid-template-columns: 1fr; }
+    .facts > div, .facts > div + div { border-left: 0; padding-left: 0; }
+    .facts > div + div { border-top: 1px solid var(--c-line); }
+  }
+</style>

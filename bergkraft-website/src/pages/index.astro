@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import BuyerPromise from '../components/BuyerPromise.astro';
+import Problems from '../components/Problems.astro';
+import Process from '../components/Process.astro';
+import Benchmark from '../components/Benchmark.astro';
+import Rice from '../components/Rice.astro';
+import Coffee from '../components/Coffee.astro';
+import Verification from '../components/Verification.astro';
+import Pricing from '../components/Pricing.astro';
+import Locations from '../components/Locations.astro';
+import Founder from '../components/Founder.astro';
+import FAQ from '../components/FAQ.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+import { faq } from '../data/faq';
+
+// Structured data. Every statement here is also visible on the page.
+// No address, reviews or ratings are included because none are published.
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site.url}/#organization`,
+  name: site.legalName,
+  alternateName: site.brand,
+  url: site.url,
+  email: site.email,
+  description: 'Independent buyer-side sourcing and procurement partner in India for rice and green coffee.',
+  founder: { '@type': 'Person', name: site.founder },
+  location: [
+    { '@type': 'Place', name: 'Berlin, Germany' },
+    { '@type': 'Place', name: 'Mangalore, India' },
+  ],
+  ...(site.linkedinCompany ? { sameAs: [site.linkedinCompany] } : {}),
+};
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: site.brand,
+  publisher: { '@id': `${site.url}/#organization` },
+  inLanguage: 'en',
+};
+const service = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Buyer-side sourcing and procurement services in India',
+  serviceType: 'Procurement and sourcing services',
+  provider: { '@id': `${site.url}/#organization` },
+  description:
+    'Supplier identification and credential assessment, market and price benchmarking, negotiation, sample, quality and inspection coordination, and procurement and shipment coordination for Indian rice and green coffee. Fees are paid by the buyer: fixed fees for defined work plus an agreed performance fee linked to verified savings.',
+  areaServed: ['Germany', 'Netherlands', 'Belgium', 'Italy', 'Poland', 'Europe'],
+  audience: { '@type': 'BusinessAudience', name: 'Rice importers, food wholesalers, private-label brands, coffee importers and roasters' },
+};
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a.join(' ') },
+  })),
+};
+---
+<BaseLayout home schema={[org, website, service, faqPage]}>
+  <Hero />
+  <BuyerPromise />
+  <Problems />
+  <Process />
+  <Benchmark />
+  <Rice />
+  <Coffee />
+  <Verification />
+  <Pricing />
+  <Locations />
+  <Founder />
+  <FAQ />
+  <ContactForm />
+</BaseLayout>

@@ -1,0 +1,67 @@
+---
+import { site } from '../data/site';
+interface Props { home?: boolean }
+const { home = false } = Astro.props;
+const base = home ? '' : '/';
+const year = new Date().getFullYear();
+---
+<footer class="footer bg-ink on-dark">
+  <div class="container">
+    <p class="mark" aria-hidden="true">Bergkraft</p>
+
+    <div class="grid cols">
+      <div class="about">
+        <p><strong>{site.legalName}</strong></p>
+        <p class="muted">Independent buyer-side sourcing and procurement partner in India for rice and green coffee.</p>
+        <p class="muted">Berlin, Germany and Mangalore, India</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul role="list">
+          {site.nav.map((i) => <li><a class="link" href={`${base}${i.href}`}>{i.label}</a></li>)}
+        </ul>
+      </nav>
+      <div>
+        <ul role="list">
+          <li><a class="link" href={`mailto:${site.email}`}>{site.email}</a></li>
+          {site.phones.map((p) => <li><a class="link" href={p.href} rel="noopener">{p.display}</a> <span class="muted small">{p.office}</span></li>)}
+          <li>
+            {site.linkedinCompany
+              ? <a class="link" href={site.linkedinCompany} rel="noopener">LinkedIn</a>
+              : <span class="muted small">LinkedIn page: link to be added</span>}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="legal">
+      <p>© {year} {site.legalName}</p>
+      <ul role="list">
+        <li><a class="link" href="/impressum/">Impressum</a></li>
+        <li><a class="link" href="/datenschutz/">Datenschutz / Privacy</a></li>
+        <li><a class="link" href="/cookies/">Cookies</a></li>
+        <li><button type="button" class="link" data-consent-open>Cookie settings</button></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: var(--s-8) var(--s-6); }
+  .mark {
+    font-family: var(--f-serif); font-weight: 300; font-size: clamp(4rem, 17vw, 16rem); line-height: 0.85; letter-spacing: -0.04em;
+    color: transparent; -webkit-text-stroke: 1px var(--c-line-on-dark); margin-bottom: var(--s-8); user-select: none;
+  }
+  .cols > * { grid-column: span 4; }
+  .about { display: grid; gap: var(--s-3); align-content: start; max-width: 24rem; }
+  li { padding-block: 0.3rem; }
+  nav ul { columns: 2; }
+  .small { font-size: var(--t-xs); }
+  .legal {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-3) var(--s-5);
+    margin-top: var(--s-8); padding-top: var(--s-5); border-top: 1px solid var(--c-line-on-dark); font-size: var(--t-sm);
+  }
+  .legal ul { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
+  .legal li { padding: 0; }
+  button.link { border: 0; cursor: pointer; padding: 0 0 2px; color: inherit; background-color: transparent; }
+  @media (max-width: 52rem) { .cols > * { grid-column: 1 / -1; margin-bottom: var(--s-6); } }
+</style>

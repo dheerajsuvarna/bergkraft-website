@@ -1,0 +1,29 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { site } from '../data/site';
+interface Props { title: string; heading: string; description: string }
+const { title, heading, description } = Astro.props;
+---
+<BaseLayout title={`${title} | ${site.brand}`} description={description}>
+  <article class="section">
+    <div class="container">
+      <p class="eyebrow">Legal</p>
+      <h1>{heading}</h1>
+      {!site.legalPagesReviewed && (
+        <p class="draft" role="note">
+          <strong>Draft.</strong> This page contains items marked “To verify before publication” and has not
+          yet been reviewed by a lawyer. It must be completed before the website goes live.
+        </p>
+      )}
+      <div class="prose">
+        <slot />
+        <p class="muted">Last updated: {site.legalLastUpdated}</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  h1 { font-size: var(--t-h2); margin-block: var(--s-5) var(--s-6); }
+  .draft { max-width: 46rem; background: var(--c-ink); color: var(--c-ivory); padding: var(--s-4); font-size: var(--t-sm); }
+</style>

@@ -1,0 +1,39 @@
+---
+// Analytics consent. Google Analytics is not loaded until the visitor accepts.
+// Both choices are presented with equal weight, and "Cookie settings" in the
+// footer reopens this panel so the decision can be changed at any time.
+import { site } from '../data/site';
+---
+<section class="consent" aria-label="Analytics consent" data-consent data-ga-id={site.ga4Id} hidden>
+  <div class="text">
+    <h2>Analytics cookies</h2>
+    <p>
+      We would like to use Google Analytics to understand how this website is used. It sets cookies and sends
+      usage data to Google. This is optional and the site works the same either way.
+      <a href="/cookies/">Cookie policy</a>
+    </p>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn btn--plain" data-consent-choice="denied">Decline</button>
+    <button type="button" class="btn btn--plain" data-consent-choice="granted">Accept</button>
+  </div>
+</section>
+
+<style>
+  .consent {
+    position: fixed; z-index: 150; left: var(--gutter); right: var(--gutter); bottom: var(--gutter);
+    max-width: 44rem; margin-left: auto;
+    background: var(--c-paper); color: var(--c-ink); border: 1px solid var(--c-ink);
+    padding: var(--s-5); display: grid; grid-template-columns: 1fr auto; gap: var(--s-5); align-items: center;
+  }
+  .consent[hidden] { display: none; }
+  h2 { font-size: 1.25rem; margin-bottom: var(--s-2); }
+  p { font-size: var(--t-sm); color: var(--c-muted); }
+  .actions { display: flex; gap: var(--s-3); }
+  /* Identical styling for both buttons: no nudging toward "Accept". */
+  .actions .btn { min-width: 7rem; justify-content: center; }
+  @media (max-width: 40rem) {
+    .consent { grid-template-columns: 1fr; }
+    .actions .btn { flex: 1; }
+  }
+</style>

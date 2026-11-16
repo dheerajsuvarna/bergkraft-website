@@ -1,0 +1,128 @@
+---
+// Enquiry form handled by Netlify Forms.
+// - `data-netlify` lets Netlify detect the form in the built HTML at deploy time.
+// - `netlify-honeypot` adds spam protection without a third-party CAPTCHA.
+// - With JavaScript, interactions.ts submits in the background and shows a
+//   success or error message. Without it, the form posts normally to /thank-you/.
+import { site } from '../data/site';
+---
+<section class="section bg-forest on-dark" id="contact">
+  <div class="container grid">
+    <div class="intro">
+      <p class="eyebrow" data-reveal><span>12</span> Request an assessment</p>
+      <h2 data-reveal>Tell us what you need to <em>source from India.</em></h2>
+      <p class="lead" data-reveal>
+        Share your product specifications, quantity and destination. We will assess your requirement and
+        discuss how Bergkraft can support your procurement.
+      </p>
+      <dl class="direct" data-reveal>
+        <div><dt>Email</dt><dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        {site.phones.map((p) => (
+          <div><dt>{p.office} ({p.note})</dt><dd><a class="link" href={p.href} rel="noopener">{p.display}</a></dd></div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="panel" data-reveal>
+      <form name="sourcing-enquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form novalidate>
+        <input type="hidden" name="form-name" value="sourcing-enquiry" />
+        <p class="hp"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+        <div class="status" role="alert" data-form-error hidden></div>
+
+        <fieldset>
+          <legend>About you</legend>
+          <div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" autocomplete="name" required /></div>
+          <div class="field"><label for="f-role">Role</label><input id="f-role" name="role" autocomplete="organization-title" required /></div>
+          <div class="field"><label for="f-company">Company name</label><input id="f-company" name="company" autocomplete="organization" required /></div>
+          <div class="field"><label for="f-website">Company website</label><input id="f-website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="example.com" required /></div>
+          <div class="field"><label for="f-email">Business email</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="f-phone">Phone number <span class="opt">optional</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="f-country">Country</label><input id="f-country" name="country" autocomplete="country-name" required /></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your requirement</legend>
+          <div class="field">
+            <label for="f-product">Product</label>
+            <select id="f-product" name="product" required>
+              <option value="">Select</option><option>Rice</option><option>Coffee</option><option>Rice and coffee</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-qty">Quantity per order (MT)</label><input id="f-qty" name="quantity_mt" inputmode="decimal" required /></div>
+          <div class="field wide"><label for="f-spec">Grade or specifications</label><textarea id="f-spec" name="specifications" rows="3" required></textarea></div>
+          <div class="field"><label for="f-orders">Estimated orders per year</label><input id="f-orders" name="orders_per_year" inputmode="numeric" required /></div>
+          <div class="field"><label for="f-dest">Destination country and port</label><input id="f-dest" name="destination" required /></div>
+          <div class="field">
+            <label for="f-pay">Preferred payment terms</label>
+            <select id="f-pay" name="payment_terms" required>
+              <option value="">Select</option><option>Advance payment</option><option>LC at sight</option><option>Documentary collection</option><option>Other or to be discussed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-time">Timeline</label>
+            <select id="f-time" name="timeline" required>
+              <option value="">Select</option><option>Within 1 month</option><option>1 to 3 months</option><option>3 to 6 months</option><option>Later or exploring</option>
+            </select>
+          </div>
+          <div class="field wide"><label for="f-more">Additional requirements <span class="opt">optional</span></label><textarea id="f-more" name="additional" rows="3"></textarea></div>
+        </fieldset>
+
+        <!-- Consent is never pre-ticked. -->
+        <label class="consent">
+          <input type="checkbox" name="privacy_acknowledged" value="yes" required />
+          <span>
+            I have read the <a href="/datenschutz/">privacy policy</a> and agree that Bergkraft may use the details
+            above to assess and reply to this enquiry.
+          </span>
+        </label>
+
+        <button class="btn btn--primary" type="submit" data-submit>Send enquiry</button>
+      </form>
+
+      <div class="done" role="status" tabindex="-1" data-form-success hidden>
+        <h3>Thank you. Your enquiry has been received.</h3>
+        <p>We will review your requirement and reply to the business email you provided.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro { grid-column: 1 / span 5; display: grid; gap: var(--s-5); align-content: start; }
+  .direct { margin-top: var(--s-5); border-top: 1px solid var(--c-line-on-dark); }
+  .direct div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-4); padding-block: var(--s-3); border-bottom: 1px solid var(--c-line-on-dark); }
+  .direct dt { font-size: var(--t-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-brass-light); }
+
+  .panel { grid-column: 7 / -1; background: var(--c-ivory); color: var(--c-ink); padding: clamp(1.5rem, 4vw, 3.25rem); }
+  fieldset { border: 0; padding: 0; margin: 0 0 var(--s-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5) var(--s-5); }
+  legend { font-family: var(--f-serif); font-size: 1.5rem; padding: 0; margin-bottom: var(--s-4); }
+  .field { display: grid; gap: var(--s-1); align-content: start; }
+  .wide { grid-column: 1 / -1; }
+  label { font-size: var(--t-sm); font-weight: 520; }
+  .opt { font-weight: 400; color: var(--c-muted); font-size: var(--t-xs); margin-left: 0.4em; }
+  input:not([type='checkbox']), select, textarea {
+    width: 100%; min-height: 2.9rem; padding: 0.6rem 0; background: transparent;
+    border: 0; border-bottom: 1px solid var(--c-ink); border-radius: 0;
+    transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+  }
+  textarea { resize: vertical; }
+  input:not([type='checkbox']):focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: none; border-color: var(--c-forest); box-shadow: 0 2px 0 var(--c-forest);
+  }
+  :global([aria-invalid='true']) { border-color: var(--c-error) !important; }
+  :global(.field-error) { color: var(--c-error); font-size: var(--t-xs); }
+  .hp { position: absolute; left: -9999px; }
+  .consent { display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); font-weight: 400; margin-bottom: var(--s-5); }
+  .consent input { width: 1.25rem; height: 1.25rem; margin-top: 0.15rem; accent-color: var(--c-forest); }
+  .status { border: 1px solid var(--c-error); color: var(--c-error); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: var(--t-sm); }
+  .done { display: grid; gap: var(--s-3); }
+  .done[hidden], .status[hidden] { display: none; }
+  .panel .btn--primary { background: var(--c-forest); color: var(--c-ivory); border-color: var(--c-forest); }
+  .panel .btn--primary:hover { background: var(--c-botanical); border-color: var(--c-botanical); }
+  .panel .btn[disabled] { opacity: 0.6; cursor: progress; }
+  .panel :global(:focus-visible) { outline-color: var(--c-brass-deep); }
+
+  @media (max-width: 62rem) { .intro, .panel { grid-column: 1 / -1; } .panel { margin-top: var(--s-7); } }
+  @media (max-width: 36rem) { fieldset { grid-template-columns: 1fr; } }
+</style>

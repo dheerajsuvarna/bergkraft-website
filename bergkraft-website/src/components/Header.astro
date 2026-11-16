@@ -1,0 +1,86 @@
+---
+import { site } from '../data/site';
+interface Props { home?: boolean }
+const { home = false } = Astro.props;
+// On legal pages the anchors must point back to the homepage.
+const base = home ? '' : '/';
+---
+<header class="site-header" data-header>
+  <div class="container inner">
+    <a class="wordmark" href={home ? '#top' : '/'} aria-label="Bergkraft home">Bergkraft</a>
+
+    <button class="toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <span class="visually-hidden">Menu</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label="Primary" data-nav>
+      <ul role="list">
+        {site.nav.map((item) => <li><a href={`${base}${item.href}`}>{item.label}</a></li>)}
+      </ul>
+      <a class="btn btn--primary btn--sm btn--plain" href={`${base}#contact`}>Request assessment</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 100; height: var(--header-h);
+    background: var(--c-ivory);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+  .site-header[data-scrolled] { border-bottom-color: var(--c-line); }
+  .inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--s-5); }
+  .wordmark {
+    font-family: var(--f-serif); font-size: 1.6rem; font-weight: 420; letter-spacing: -0.02em; text-decoration: none;
+    font-variation-settings: 'opsz' 144;
+  }
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+  .nav ul { display: flex; gap: clamp(0.9rem, 1.8vw, 1.9rem); }
+  .nav li a {
+    font-size: var(--t-sm); font-weight: 480; text-decoration: none; padding-block: 0.5rem; position: relative;
+  }
+  .nav li a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0.2rem; height: 1px; background: var(--c-brass-deep);
+    transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease);
+  }
+  .nav li a:hover::after, .nav li a[aria-current='true']::after { transform: scaleX(1); }
+  .toggle { display: none; }
+
+  @media (max-width: 68rem) {
+    /* The menu only collapses when JavaScript is available to open it. */
+    :global(.js) .toggle {
+      display: grid; place-items: center; width: 3rem; height: 3rem; margin-right: -0.75rem;
+      background: none; border: 0; cursor: pointer;
+    }
+    .bars, .bars::before, .bars::after {
+      display: block; width: 1.5rem; height: 1.5px; background: var(--c-ink); transition: transform var(--dur-fast) var(--ease);
+    }
+    .bars { position: relative; }
+    .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
+    .bars::before { top: -6px; }
+    .bars::after { top: 6px; }
+    .toggle[aria-expanded='true'] .bars { background: transparent; }
+    .toggle[aria-expanded='true'] .bars::before { transform: translateY(6px) rotate(45deg); }
+    .toggle[aria-expanded='true'] .bars::after { transform: translateY(-6px) rotate(-45deg); }
+
+    :global(.js) .nav {
+      position: fixed; inset: var(--header-h) 0 0 0; background: var(--c-ivory);
+      flex-direction: column; align-items: flex-start; justify-content: space-between;
+      padding: var(--s-6) var(--gutter) var(--s-7); overflow-y: auto;
+      visibility: hidden; opacity: 0; transform: translateY(-8px);
+      transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), visibility 0s linear var(--dur-fast);
+    }
+    :global(.js) .nav[data-open] { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
+    :global(.js) .nav ul { flex-direction: column; gap: 0; width: 100%; }
+    :global(.js) .nav li { border-bottom: 1px solid var(--c-line); }
+    :global(.js) .nav li a { display: block; font-family: var(--f-serif); font-size: 1.75rem; padding-block: 0.9rem; }
+    :global(.js) .nav li a::after { content: none; }
+    :global(.js) .nav .btn { width: 100%; justify-content: center; margin-top: var(--s-6); }
+
+    /* Without JavaScript: a simple wrapping row. */
+    :global(html:not(.js)) .site-header { height: auto; position: static; }
+    :global(html:not(.js)) .inner, :global(html:not(.js)) .nav, :global(html:not(.js)) .nav ul { flex-wrap: wrap; padding-block: var(--s-2); }
+  }
+</style>

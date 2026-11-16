@@ -1,0 +1,34 @@
+---
+// Image wrapper. Shows a small "temporary image" tag while the file is
+// still placeholder artwork (controlled in src/data/site.ts).
+interface Props {
+  image: { src: string; w: number; h: number; temporary: boolean };
+  alt: string;
+  eager?: boolean;
+  class?: string;
+}
+const { image, alt, eager = false, class: className } = Astro.props;
+---
+<figure class:list={['art', className]}>
+  <img
+    src={image.src}
+    width={image.w}
+    height={image.h}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+  />
+  {image.temporary && <figcaption>Temporary image</figcaption>}
+</figure>
+
+<style>
+  .art { position: relative; overflow: hidden; background: var(--c-husk); }
+  .art img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
+  .art:hover img { transform: scale(1.03); }
+  figcaption {
+    position: absolute; left: 0; bottom: 0;
+    background: var(--c-ink); color: var(--c-ivory);
+    font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 0.6rem;
+  }
+</style>

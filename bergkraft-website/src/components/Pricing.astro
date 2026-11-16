@@ -1,0 +1,65 @@
+---
+import SectionHead from './SectionHead.astro';
+const parts = [
+  { kind: 'Fixed', t: 'Sourcing assessment fee', d: 'A fixed fee for defined initial work: reviewing your requirement, the market and the realistic supplier options.' },
+  { kind: 'Fixed', t: 'Procurement mandate fee', d: 'A fixed fee for the agreed assignment, from supplier evaluation and negotiation to coordination of the order.' },
+  { kind: 'Performance', t: 'Share of verified savings', d: 'An agreed share of verified savings below the benchmark. A 20% share is used on this page as an illustration, subject to agreement.' },
+];
+---
+<section class="section section--paper" id="pricing">
+  <div class="container grid">
+    <div class="intro">
+      <SectionHead index="08" label="Pricing and commercial model" title="Our success should be <em>aligned with yours.</em>">
+        <p>
+          Fixed + Performance. You pay for defined work, and we earn more only when the price you pay is
+          verifiably below the benchmark you approved.
+        </p>
+      </SectionHead>
+      <a class="btn" href="#contact" data-reveal>Ask for a fee proposal</a>
+    </div>
+
+    <ol class="parts" role="list">
+      {parts.map((p, i) => (
+        <li data-reveal style={`--delay:${0.08 * i}s`}>
+          <span class="n" aria-hidden="true">{i + 1}</span>
+          <div>
+            <span class:list={['kind', { perf: p.kind === 'Performance' }]}>{p.kind}</span>
+            <h3>{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </div>
+        </li>
+      ))}
+      <li class="terms" data-reveal>
+        <p>
+          <strong>Agreed in writing, per assignment.</strong> Fee amounts depend on product, volume and scope and are
+          set out in your services agreement before work begins. We do not publish standard rates and we do not
+          guarantee savings.
+        </p>
+        <p>
+          <strong>Third-party costs are separate.</strong> Sample, courier, testing, inspection and other third-party
+          expenses are agreed with you in advance and are not part of Bergkraft’s fees.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .intro { grid-column: 1 / span 5; align-self: start; position: sticky; top: calc(var(--header-h) + 3rem); }
+  .intro :global(.head) { margin-bottom: var(--s-6); }
+  .parts { grid-column: 7 / -1; }
+  .parts li { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s-4); padding-block: var(--s-6); border-top: 1px solid var(--c-line); }
+  .parts li div { display: grid; gap: var(--s-2); justify-items: start; }
+  .n { font-family: var(--f-serif); font-size: 2.5rem; line-height: 1; font-weight: 300; color: var(--c-brass); }
+  .kind { font-size: var(--t-xs); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 560; border: 1px solid var(--c-ink); padding: 0.15rem 0.55rem; }
+  .kind.perf { background: var(--c-forest); border-color: var(--c-forest); color: var(--c-ivory); }
+  .parts li.terms { grid-template-columns: 1fr 1fr; gap: var(--s-6); font-size: var(--t-sm); border-top-color: var(--c-ink); }
+
+  @media (max-width: 62rem) {
+    .intro, .parts { grid-column: 1 / -1; }
+    .intro { position: static; margin-bottom: var(--s-7); }
+  }
+  @media (max-width: 36rem) {
+    .parts li.terms { grid-template-columns: 1fr; }
+  }
+</style>

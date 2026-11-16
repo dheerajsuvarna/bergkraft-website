@@ -1,0 +1,54 @@
+---
+import SectionHead from './SectionHead.astro';
+const problems = [
+  {
+    t: 'Supplier uncertainty',
+    d: 'A website and a price list say little about whether a mill or exporter can deliver your specification, at your volume, on time. We shortlist suppliers and review their credentials before you spend time on them.',
+  },
+  {
+    t: 'Price uncertainty',
+    d: 'One quotation tells you what one supplier would like to be paid. We set it against market references and comparable offers, on the same grade, Incoterm and date, so you know where it stands.',
+  },
+  {
+    t: 'Quality uncertainty',
+    d: 'The sample and the shipment are not always the same product. We coordinate reference samples and the inspections and tests you agree to, with the specification written down first.',
+  },
+  {
+    t: 'Procurement complexity',
+    d: 'Suppliers, inspectors, forwarders, banks and documents, in another time zone. We keep the process moving and keep you informed, as one point of contact in India and in Europe.',
+  },
+];
+---
+<section class="section" id="problems">
+  <div class="container">
+    <SectionHead index="02" label="The problems we solve" title="Buying from India is rarely a product problem. <em>It is an information problem.</em>" wide />
+    <ol class="list" role="list">
+      {problems.map((p, i) => (
+        <li data-reveal style={`--delay:${0.08 * i}s`}>
+          <span class="n" aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+          <h3>{p.t}</h3>
+          <p class="muted">{p.d}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .list { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: clamp(2rem, 8vw, 8rem); }
+  li {
+    display: grid; grid-template-columns: 3rem 1fr; column-gap: var(--s-4); row-gap: var(--s-3);
+    padding-block: var(--s-6); border-top: 1px solid var(--c-line);
+  }
+  /* Offset the right-hand column so the grid does not read as four equal cards. */
+  li:nth-child(even) { position: relative; top: var(--s-8); }
+  .n { font-family: var(--f-serif); font-style: italic; font-size: 1.5rem; color: var(--c-brass-deep); line-height: 1.2; }
+  h3, p { grid-column: 2; }
+  .list { padding-bottom: var(--s-8); }
+
+  @media (max-width: 52rem) {
+    .list { grid-template-columns: 1fr; padding-bottom: 0; }
+    li:nth-child(even) { top: 0; }
+    li { grid-template-columns: 2.25rem 1fr; }
+  }
+</style>

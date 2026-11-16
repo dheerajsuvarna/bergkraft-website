@@ -1,0 +1,63 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Verify from '../components/Verify.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Cookie Policy" heading="Cookie policy" description="Which cookies and browser storage the Bergkraft website uses, and how to change your choice.">
+  <p>
+    This website uses as little browser storage as possible. Nothing optional is stored or loaded unless you
+    agree to it.
+  </p>
+
+  <h2>Your choice</h2>
+  <p>
+    On your first visit you are asked whether analytics may be used. “Accept” and “Decline” are equal
+    options, and the website works the same with either. You can change your decision at any time:
+  </p>
+  <p><button type="button" class="btn btn--plain" data-consent-open>Open cookie settings</button></p>
+
+  <h2>Necessary storage</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Purpose</th><th scope="col">Duration</th></tr></thead>
+      <tbody>
+        <tr><td>bk-analytics-consent</td><td>Local storage</td><td>Remembers whether you accepted or declined analytics.</td><td>Until you clear your browser storage</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Legal basis: § 25(2) TDDDG. No consent is required because the entry is needed to respect your choice.</p>
+
+  <h2>Analytics cookies (only after you accept)</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Provider</th><th scope="col">Purpose</th><th scope="col">Duration</th></tr></thead>
+      <tbody>
+        <tr><td>_ga</td><td>Google Analytics</td><td>Distinguishes visitors for usage statistics.</td><td>Up to 2 years</td></tr>
+        <tr><td>_ga_{site.ga4Id.replace('G-', '')}</td><td>Google Analytics</td><td>Keeps the state of a visit.</td><td>Up to 2 years</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Legal basis: your consent (§ 25(1) TDDDG, Art. 6(1)(a) GDPR). If you decline or later withdraw consent,
+    Google Analytics is switched off and its cookies are removed from this site where the browser allows it.
+  </p>
+  <Verify>
+    <ul>
+      <li>Cookie names and durations against the live Google Analytics configuration after launch.</li>
+      <li>That no other tags, pixels or embedded services have been added to the website.</li>
+    </ul>
+  </Verify>
+
+  <h2>What we do not use</h2>
+  <p>No advertising cookies, no social media plugins and no third-party fonts.</p>
+
+  <h2>More information</h2>
+  <p>See the <a href="/datenschutz/">privacy policy</a> for details on data processing and your rights.</p>
+</LegalLayout>
+
+<style>
+  .table { overflow-x: auto; margin-bottom: var(--s-4); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 34rem; }
+  th, td { text-align: left; vertical-align: top; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 1px solid var(--c-line); }
+  th { font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-brass-deep); }
+</style>

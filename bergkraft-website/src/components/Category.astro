@@ -1,0 +1,93 @@
+---
+// Shared layout for the two sourcing categories (rice and coffee), so the
+// markup and styles exist once. Rice.astro and Coffee.astro supply content.
+import Art from './Art.astro';
+
+interface Props {
+  id: string;
+  index: string;
+  label: string;
+  title: string;
+  intro: string;
+  groups: { name: string; items: { t: string; d: string }[] }[];
+  specs: string[];
+  image: { src: string; w: number; h: number; temporary: boolean };
+  imageAlt: string;
+  dark?: boolean;
+  flip?: boolean;
+}
+const { id, index, label, title, intro, groups, specs, image, imageAlt, dark = false, flip = false } = Astro.props;
+---
+<section class:list={['section', dark ? 'bg-coffee on-dark' : 'section--husk', { flip }]} id={id}>
+  <div class="container grid">
+    <div class="media" data-reveal>
+      <Art image={image} alt={imageAlt} />
+      <p class="caption">Sourcing category. Not a stock list: every requirement is quoted against its own specification.</p>
+    </div>
+
+    <div class="body">
+      <header data-reveal>
+        <p class="eyebrow"><span>{index}</span> {label}</p>
+        <h2 set:html={title} />
+        <p class="lead">{intro}</p>
+      </header>
+
+      {groups.map((g) => (
+        <div class="group" data-reveal>
+          <h3>{g.name}</h3>
+          <ul role="list">
+            {g.items.map((it) => (
+              <li><strong>{it.t}</strong><span class="muted">{it.d}</span></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <div class="specs" data-reveal>
+        <h3>What a specification should state</h3>
+        <ul role="list">{specs.map((s) => <li>{s}</li>)}</ul>
+      </div>
+
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .media { grid-column: 1 / span 5; align-self: start; position: sticky; top: calc(var(--header-h) + 2rem); }
+  .media :global(.art) { aspect-ratio: 4 / 5; }
+  .caption { font-size: var(--t-xs); margin-top: var(--s-3); color: var(--c-muted); max-width: 30em; }
+  .on-dark .caption { color: var(--c-muted-on-dark); }
+  .body { grid-column: 7 / -1; display: grid; gap: var(--s-7); }
+  .flip .media { grid-column: 8 / -1; grid-row: 1; }
+  .flip .body { grid-column: 1 / span 6; grid-row: 1; }
+  header { display: grid; gap: var(--s-5); }
+
+  .group h3, .specs h3 {
+    font-family: var(--f-sans); font-size: var(--t-xs); font-weight: 560; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--c-brass-deep); margin-bottom: var(--s-3);
+  }
+  .on-dark .group h3, .on-dark .specs h3 { color: var(--c-brass-light); }
+  .group li {
+    display: grid; grid-template-columns: minmax(8rem, 1fr) 2fr; gap: var(--s-4); align-items: baseline;
+    padding-block: var(--s-4); border-top: 1px solid var(--c-line);
+    transition: padding-left var(--dur-fast) var(--ease);
+  }
+  .group li:hover { padding-left: var(--s-3); }
+  .on-dark .group li { border-color: var(--c-line-on-dark); }
+  .group strong { font-family: var(--f-serif); font-weight: 400; font-size: 1.35rem; line-height: 1.2; }
+  .group span { font-size: var(--t-sm); }
+
+  .specs ul { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .specs li { border: 1px solid var(--c-line); padding: 0.35rem 0.8rem; font-size: var(--t-sm); }
+  .on-dark .specs li { border-color: var(--c-line-on-dark); }
+
+  @media (max-width: 62rem) {
+    .media, .body, .flip .media, .flip .body { grid-column: 1 / -1; grid-row: auto; }
+    .media { position: static; margin-bottom: var(--s-6); }
+    .media :global(.art) { aspect-ratio: 4 / 3; }
+  }
+  @media (max-width: 30rem) {
+    .group li { grid-template-columns: 1fr; gap: var(--s-1); }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/inter-tight';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** True on the homepage, so navigation uses in-page anchors. */
+  home?: boolean;
+  noindex?: boolean;
+  /** JSON-LD objects. Must describe content that is visible on the page. */
+  schema?: Record<string, unknown>[];
+}
+const { title = site.title, description = site.description, home = false, noindex = false, schema = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL('/images/og-image.png', site.url).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0e241d" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {schema.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
+
+    <!-- Marks the document as script-enabled before first paint, so reveal
+         animations and the mobile menu only hide content when JS can show it. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header home={home} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer home={home} />
+    <ConsentBanner />
+    <script>
+      import '../scripts/interactions.ts';
+    </script>
+  </body>
+</html>

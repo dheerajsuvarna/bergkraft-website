@@ -1,0 +1,138 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Verify from '../components/Verify.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Datenschutz / Privacy Policy" heading="Datenschutz / Privacy policy" description="How Bergkraft Private Limited handles personal data under the GDPR.">
+  <p>
+    This policy explains what personal data is processed when you visit this website or contact us, for what
+    purposes, on which legal basis under the EU General Data Protection Regulation (GDPR), and what rights
+    you have.
+  </p>
+
+  <h2>1. Controller</h2>
+  <p>
+    <strong>{site.legalName}</strong><br />
+    Email: <a href={`mailto:${site.email}`}>{site.email}</a>
+  </p>
+  <Verify>
+    <ul>
+      <li>Postal address of the controller.</li>
+      <li>Whether an EU representative under Art. 27 GDPR must be appointed, and its name and contact details. The company is incorporated in India and offers services to businesses in the EU.</li>
+      <li>Whether a data protection officer has been appointed.</li>
+    </ul>
+  </Verify>
+
+  <h2>2. Hosting and server logs</h2>
+  <p>
+    This website is hosted by Netlify, Inc. (USA). When you load a page, the hosting provider processes
+    technical data that your browser sends, such as IP address, date and time, the page requested and browser
+    type, in order to deliver the website and keep it secure.
+  </p>
+  <p>Legal basis: Art. 6(1)(f) GDPR (legitimate interest in operating a secure and reliable website).</p>
+  <Verify>
+    <ul>
+      <li>That a data processing agreement with Netlify is in place.</li>
+      <li>The transfer mechanism for data sent to the USA (for example EU-US Data Privacy Framework certification or standard contractual clauses) and Netlify’s log retention period.</li>
+    </ul>
+  </Verify>
+
+  <h2>3. Enquiry form</h2>
+  <p>
+    If you send the sourcing enquiry form, we process the details you enter: name, company, company website,
+    business email, phone number (if given), country, role and the details of your requirement. We use them to
+    assess your enquiry and to reply to you. Submissions are received and stored through Netlify Forms, a
+    service of our hosting provider, and forwarded to us. A hidden field is used to detect automated spam.
+  </p>
+  <p>
+    Legal basis: Art. 6(1)(b) GDPR (steps taken at your request before entering into a contract) and
+    Art. 6(1)(f) GDPR (legitimate interest in answering business enquiries).
+  </p>
+  <Verify>
+    <ul>
+      <li>How long enquiries are kept, in Netlify and in Bergkraft’s own email or records, and when they are deleted.</li>
+      <li>Any other tools that receive enquiry data, such as a CRM or email provider.</li>
+    </ul>
+  </Verify>
+
+  <h2>4. Contact by email, phone or WhatsApp</h2>
+  <p>
+    If you contact us by email or phone, we process your message and contact details to handle your request.
+    If you choose to contact us on WhatsApp, your message and phone number are also processed by the provider
+    of WhatsApp (in the EU: WhatsApp Ireland Limited) under its own terms and privacy policy. You can always
+    use email instead.
+  </p>
+  <p>Legal basis: Art. 6(1)(b) and Art. 6(1)(f) GDPR.</p>
+
+  <h2>5. Analytics (only with your consent)</h2>
+  <p>
+    If you select “Accept” in the analytics notice, this website loads Google Analytics 4, a service of
+    Google Ireland Limited. It sets cookies and processes usage data such as pages viewed, approximate
+    location, device and browser information. Data may be transferred to Google LLC in the USA. If you select
+    “Decline”, or make no choice, Google Analytics is not loaded and no analytics cookies are set.
+  </p>
+  <p>
+    Legal basis: your consent under Art. 6(1)(a) GDPR and § 25(1) TDDDG. You can withdraw consent at any time
+    with effect for the future through “Cookie settings” in the footer of every page.
+  </p>
+  <Verify>
+    <ul>
+      <li>That the Google data processing terms have been accepted and the data retention period configured in Google Analytics.</li>
+      <li>Whether Google Signals or advertising features are enabled. This policy assumes they are switched off.</li>
+    </ul>
+  </Verify>
+
+  <h2>6. Cookies and local storage</h2>
+  <p>
+    Your analytics choice is saved in your browser’s local storage so that we do not ask again on every visit.
+    This is technically necessary (§ 25(2) TDDDG). Details are in the <a href="/cookies/">cookie policy</a>.
+  </p>
+
+  <h2>7. Fonts and embedded content</h2>
+  <p>
+    Fonts are served from this website itself. No fonts, maps, videos or social media plugins are loaded from
+    third-party servers.
+  </p>
+
+  <h2>8. Recipients and transfers outside the EU</h2>
+  <p>
+    Enquiries are handled by Bergkraft staff in Germany and India. Where it is needed to work on your
+    requirement, and only as discussed with you, information may be shared with suppliers and service
+    providers. Our hosting and analytics providers may process data in the USA.
+  </p>
+  <Verify>
+    <ul>
+      <li>The safeguards used for transfers to India, for which there is no EU adequacy decision (for example standard contractual clauses, or reliance on Art. 49 GDPR).</li>
+    </ul>
+  </Verify>
+
+  <h2>9. Storage period</h2>
+  <p>
+    We keep personal data only as long as needed for the purposes above or as required by statutory retention
+    duties, and then delete it.
+  </p>
+
+  <h2>10. Your rights</h2>
+  <p>Under the GDPR you have the right to:</p>
+  <ul>
+    <li>access the personal data we hold about you (Art. 15);</li>
+    <li>have inaccurate data corrected (Art. 16);</li>
+    <li>have data erased (Art. 17) or its processing restricted (Art. 18);</li>
+    <li>receive your data in a portable format (Art. 20);</li>
+    <li>object to processing based on legitimate interests (Art. 21);</li>
+    <li>withdraw consent at any time, without affecting earlier processing (Art. 7(3));</li>
+    <li>lodge a complaint with a data protection supervisory authority (Art. 77).</li>
+  </ul>
+  <p>To exercise your rights, write to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  <Verify>
+    <ul>
+      <li>The supervisory authority to name here, which depends on the controller’s or representative’s establishment.</li>
+    </ul>
+  </Verify>
+
+  <h2>11. Automated decisions</h2>
+  <p>We do not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</p>
+
+  <h2>12. Changes to this policy</h2>
+  <p>We update this policy when the website or the way we process data changes.</p>
+</LegalLayout>

@@ -1,0 +1,52 @@
+---
+import Category from './Category.astro';
+import Art from './Art.astro';
+import { images } from '../data/site';
+
+const groups = [
+  {
+    name: 'Species',
+    items: [
+      { t: 'Indian Arabica', d: 'Largely shade-grown at altitude. Sourced for specialty and blend components.' },
+      { t: 'Indian Robusta', d: 'Known for clean, well-prepared lots. Used in espresso blends and as single origin.' },
+    ],
+  },
+  {
+    name: 'Processing',
+    items: [
+      { t: 'Washed', d: 'Pulped and washed before drying. Sold in the Indian trade as Plantation (Arabica) and Parchment (Robusta).' },
+      { t: 'Natural', d: 'Dried in the cherry. Sold as Cherry grades.' },
+      { t: 'Monsooned', d: 'Exposed to monsoon air on India’s west coast, giving low acidity and a heavy body.' },
+    ],
+  },
+  {
+    name: 'Origins',
+    items: [
+      { t: 'Coorg', d: 'Kodagu district, Karnataka. Arabica and Robusta estates under shade.' },
+      { t: 'Chikmagalur', d: 'Karnataka hill district with a long coffee-growing history, including Arabica at higher elevations.' },
+    ],
+  },
+];
+const specs = ['Screen size', 'Moisture', 'Defects', 'Processing', 'Cup profile', 'Origin', 'Packaging', 'Quantity'];
+---
+<Category
+  id="coffee"
+  index="06"
+  label="Coffee sourcing"
+  title="Indian green coffee, <em>from estate to your roastery door.</em>"
+  intro="For importers and roasters who want Indian Arabica or Robusta without building their own presence at origin. We identify suppliers, coordinate samples for cupping and support the order through shipment."
+  groups={groups}
+  specs={specs}
+  image={images.coffeeDetail}
+  imageAlt="Unroasted green coffee beans photographed close up"
+  dark
+  flip
+>
+  <div class="estate" data-reveal>
+    <Art image={images.coffeeEstate} alt="Hills of a coffee-growing landscape in Karnataka, India" />
+  </div>
+</Category>
+
+<style>
+  .estate :global(.art) { aspect-ratio: 16 / 7; }
+</style>

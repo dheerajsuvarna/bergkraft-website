@@ -1,0 +1,67 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Verify from '../components/Verify.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Impressum" heading="Impressum / Legal notice" description="Legal notice and provider identification for Bergkraft Private Limited.">
+  <h2>Provider</h2>
+  <p><strong>{site.legalName}</strong><br />A private limited company incorporated in India.</p>
+  <Verify>
+    <ul>
+      <li>Registered office address in India (as shown in the company’s incorporation records).</li>
+      <li>Corporate Identification Number (CIN) and the Registrar of Companies where the company is registered.</li>
+      <li>Whether a business address in Germany exists and may be published. None is stated here.</li>
+    </ul>
+  </Verify>
+
+  <h2>Represented by</h2>
+  <Verify>
+    <ul>
+      <li>Full names of the director or directors authorised to represent the company.</li>
+    </ul>
+  </Verify>
+
+  <h2>Contact</h2>
+  <p>
+    Email: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+    {site.phones.map((p) => <>{p.office}: {p.display} ({p.note})<br /></>)}
+  </p>
+
+  <h2>Registrations</h2>
+  <p>Importer Exporter Code (IEC): {site.iec}</p>
+  <Verify>
+    <ul>
+      <li>IEC number against the original certificate.</li>
+      <li>GSTIN, if it is to be published.</li>
+      <li>VAT identification number in Germany or the EU, if one has been issued.</li>
+    </ul>
+  </Verify>
+
+  <h2>Responsible for content</h2>
+  <Verify>
+    <ul>
+      <li>Name and address of the person responsible for editorial content (§ 18 para. 2 MStV), if applicable.</li>
+    </ul>
+  </Verify>
+
+  <h2>Nature of this website</h2>
+  <p>
+    This website describes procurement services offered to businesses. It is not an offer to sell goods.
+    Figures marked as illustrative are examples only and are not quotations, achieved results or guarantees.
+  </p>
+
+  <h2>Liability for content and links</h2>
+  <p>
+    We prepare the content of this website with care, but we cannot guarantee that it is complete, correct
+    and current at all times. This website links to external websites, including official sources. We have no
+    influence over their content and their operators are responsible for it. If we become aware of unlawful
+    content, we will remove the link.
+  </p>
+
+  <h2>Consumer dispute resolution</h2>
+  <Verify>
+    <ul>
+      <li>Statement on participation in dispute resolution proceedings before a consumer arbitration board (§ 36 VSBG), if applicable to the business.</li>
+    </ul>
+  </Verify>
+</LegalLayout>
