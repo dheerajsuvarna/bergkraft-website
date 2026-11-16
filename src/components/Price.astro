@@ -1,31 +1,23 @@
 ---
 // How Bergkraft works on price, and how it charges.
 // Illustrative example: derived values are calculated so the figures always add up.
+import { t, usd as fmt, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).price;
 const ex = { benchmark: 1000, negotiated: 975, quantity: 25, share: 0.2 };
 const gross = (ex.benchmark - ex.negotiated) * ex.quantity;
 const fee = gross * ex.share;
 const retained = gross - fee;
-const usd = (n: number) => `$${n.toLocaleString('en-US')}`;
-
-const how = [
-  { t: 'We agree the starting point first', d: 'Before any negotiation, we document a benchmark price for your exact specification and you approve it.' },
-  { t: 'We compare like with like', d: 'Offers are only compared on the same grade, origin, processing, quantity, packaging, Incoterm, destination, payment terms and date.' },
-  { t: 'We negotiate for you', d: 'With the benchmark and competing offers in hand, we negotiate price and terms on your behalf.' },
-];
-const fees = [
-  { kind: 'Fixed', t: 'Sourcing assessment', d: 'For defined initial work: your requirement, the market and realistic supplier options.' },
-  { kind: 'Fixed', t: 'Procurement mandate', d: 'For the agreed assignment, from supplier vetting and negotiation to order follow-up.' },
-  { kind: 'Performance', t: 'Share of verified savings', d: 'An agreed share of what we save you below the benchmark. 20% is used here as an example.' },
-];
+const usd = (n: number) => fmt(lang, n);
+const how = d.how;
+const fees = d.fees;
 ---
 <section class="section section--tint" id="pricing">
   <div class="container">
     <div class="section-intro">
-      <h2>We earn more only when you pay less.</h2>
-      <p class="lead">
-        Our aim is the best price available for your specification, without trading down on quality. Our fee
-        is built so that we share that aim.
-      </p>
+      <h2>{d.h2}</h2>
+      <p class="lead">{d.lead}</p>
     </div>
 
     <div class="grid top">
@@ -40,44 +32,33 @@ const fees = [
 
       <figure class="sheet" aria-labelledby="ex-title">
         <figcaption>
-          <strong id="ex-title">Illustrative example</strong>
-          <span>Illustrative example only. Not an actual quotation, achieved saving or guaranteed outcome.</span>
+          <strong id="ex-title">{d.exTitle}</strong>
+          <span>{d.exNote}</span>
         </figcaption>
         <dl>
-          <div><dt>Agreed benchmark</dt><dd>{usd(ex.benchmark)}/MT</dd></div>
-          <div><dt>Negotiated price</dt><dd>{usd(ex.negotiated)}/MT</dd></div>
-          <div><dt>Quantity</dt><dd>{ex.quantity} MT</dd></div>
-          <div><dt>Gross price difference</dt><dd>{usd(gross)}</dd></div>
-          <div><dt>Illustrative performance fee at {ex.share * 100}%</dt><dd>{usd(fee)}</dd></div>
-          <div class="total"><dt>Buyer retains</dt><dd>{usd(retained)}</dd></div>
+          <div><dt>{d.rows.benchmark}</dt><dd>{usd(ex.benchmark)}/{d.unit}</dd></div>
+          <div><dt>{d.rows.negotiated}</dt><dd>{usd(ex.negotiated)}/{d.unit}</dd></div>
+          <div><dt>{d.rows.quantity}</dt><dd>{ex.quantity} {d.unit}</dd></div>
+          <div><dt>{d.rows.gross}</dt><dd>{usd(gross)}</dd></div>
+          <div><dt>{d.rows.fee.replace('{pct}', String(ex.share * 100))}</dt><dd>{usd(fee)}</dd></div>
+          <div class="total"><dt>{d.rows.retains}</dt><dd>{usd(retained)}</dd></div>
         </dl>
       </figure>
     </div>
 
-    <p class="refs muted">
-      Benchmarks draw on FAO rice market information and APEDA information for rice, and on International
-      Coffee Organization indicators, ICE Arabica and Robusta futures and Indian Coffee Board information for
-      coffee, together with comparable Indian supplier and exporter quotations. These are reference points,
-      not direct physical shipment prices. Savings cannot be claimed when they result from inferior quality,
-      reduced specifications, a lower grade or general market movements unrelated to the agreed negotiation
-      methodology.
-    </p>
+    <p class="refs muted">{d.refs}</p>
 
-    <h3 class="fees-title">What you pay us</h3>
+    <h3 class="fees-title">{d.feesTitle}</h3>
     <ul class="fees" role="list">
       {fees.map((f) => (
         <li>
-          <span class:list={['kind', { perf: f.kind === 'Performance' }]}>{f.kind}</span>
+          <span class:list={['kind', { perf: f.perf }]}>{f.kind}</span>
           <h4>{f.t}</h4>
           <p class="muted">{f.d}</p>
         </li>
       ))}
     </ul>
-    <p class="small muted terms">
-      Fee amounts depend on product, volume and scope and are agreed in writing before work begins. Sample,
-      courier, testing, inspection and other third-party costs are agreed separately. We do not guarantee
-      savings.
-    </p>
+    <p class="small muted terms">{d.terms}</p>
   </div>
 </section>
 

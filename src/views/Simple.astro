@@ -1,0 +1,21 @@
+---
+// Thank-you and not-found pages, shared by both languages.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, path, type Lang } from '../i18n';
+interface Props { lang: Lang; page: 'thanks' | 'notFound' }
+const { lang, page } = Astro.props;
+const d = t(lang)[page];
+---
+<BaseLayout lang={lang} title={d.title} noindex>
+  <section class="section">
+    <div class="container box">
+      <h1>{d.h1}</h1>
+      {'lead' in d && <p class="lead">{d.lead}</p>}
+      <a class="btn" href={path(lang, '/')}>{d.back}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .box { display: grid; gap: var(--s-5); justify-items: start; }
+</style>

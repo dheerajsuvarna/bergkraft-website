@@ -5,6 +5,29 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Language by region -----------------------------------------------------------
+# English is the default. Visitors from Germany, Austria and Switzerland who
+# open the homepage are sent to the German version. Only "/" is redirected, so
+# every English page stays reachable by direct link, and search engines can
+# index both languages.
+#
+# Rule 1: a visitor who chose English in the language switcher has the cookie
+# bk_lang_en and stays on the English homepage.
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+  force = true
+  conditions = {Cookie = ["bk_lang_en"]}
+
+# Rule 2: everyone else in DE, AT and CH goes to /de/.
+[[redirects]]
+  from = "/"
+  to = "/de/"
+  status = 302
+  force = true
+  conditions = {Country = ["DE", "AT", "CH"]}
+
 [[headers]]
   for = "/*"
   [headers.values]

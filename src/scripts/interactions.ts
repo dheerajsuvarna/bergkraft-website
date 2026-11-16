@@ -1,6 +1,6 @@
 // All client-side behaviour for the site. Deliberately small and dependency-free.
 // Sections: header, mobile navigation, bag marking tabs, enquiry form,
-// analytics consent.
+// analytics consent, event tracking, language choice.
 
 declare global {
   interface Window {
@@ -33,7 +33,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') { setNav(false); toggle.focus(); }
 });
 // Close the panel if the window grows to the desktop layout.
-window.matchMedia('(min-width: 68.01rem)').addEventListener('change', (e) => { if (e.matches) setNav(false); });
+window.matchMedia('(min-width: 74.01rem)').addEventListener('change', (e) => { if (e.matches) setNav(false); });
 
 /* Highlight the navigation link of the section in view --------------------- */
 const navLinks = $$<HTMLAnchorElement>('[data-nav] li a').filter((a) => a.hash);
@@ -83,9 +83,11 @@ if (form) {
   type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
   const fields = () => Array.from(form.elements).filter((el): el is Field => 'validity' in el && (el as Field).name !== 'bot-field');
 
+  // Messages come from data attributes on the form, so they follow the page language.
+  const msg = form.dataset;
   const message = (el: Field) => {
-    if (el.validity.valueMissing) return el.type === 'checkbox' ? 'Please confirm you have read the privacy policy.' : 'This field is required.';
-    if (el.validity.typeMismatch) return 'Please enter a valid email address.';
+    if (el.validity.valueMissing) return (el.type === 'checkbox' ? msg.msgCheckbox : msg.msgRequired) ?? el.validationMessage;
+    if (el.validity.typeMismatch) return msg.msgEmail ?? el.validationMessage;
     return el.validationMessage;
   };
   function validateField(el: Field): boolean {
@@ -113,20 +115,21 @@ if (form) {
     if (errorBox) errorBox.hidden = true;
     const invalid = fields().filter((el) => !validateField(el));
     if (invalid.length) {
-      showError(`Please check ${invalid.length === 1 ? 'the highlighted field' : `the ${invalid.length} highlighted fields`}.`);
+      showError((invalid.length === 1 ? msg.msgOne : msg.msgMany?.replace('{n}', String(invalid.length))) ?? '');
       invalid[0]?.focus();
       return;
     }
-    if (submit) { submit.disabled = true; submit.textContent = 'Sending'; }
+    if (submit) { submit.disabled = true; submit.textContent = msg.labelSending ?? ''; }
     try {
       const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
       const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
       if (!res.ok) throw new Error(`Form endpoint returned ${res.status}`);
       form.hidden = true;
       if (success) { success.hidden = false; success.focus(); }
+      track('generate_lead', { product: String(new FormData(form).get('product') ?? '') });
     } catch {
-      showError('Sorry, your enquiry could not be sent. Please try again, or email contact@bergkraftexports.com.');
-      if (submit) { submit.disabled = false; submit.textContent = 'Send enquiry'; }
+      showError(msg.msgFailed ?? '');
+      if (submit) { submit.disabled = false; submit.textContent = msg.labelSubmit ?? ''; }
     }
   });
 }
@@ -138,6 +141,12 @@ const CONSENT_KEY = 'bk-analytics-consent';
 const banner = $('[data-consent]');
 const gaId = banner?.dataset.gaId ?? '';
 let analyticsLoaded = false;
+let gtagFn: ((...args: unknown[]) => void) | null = null;
+
+/** Send an event to Google Analytics. Does nothing unless the visitor has accepted analytics. */
+function track(name: string, params: Record<string, string> = {}) {
+  if (gtagFn) gtagFn('event', name, { language: document.documentElement.lang, ...params });
+}
 
 const readConsent = (): string | null => { try { return localStorage.getItem(CONSENT_KEY); } catch { return null; } };
 const writeConsent = (v: string) => { try { localStorage.setItem(CONSENT_KEY, v); } catch { /* storage unavailable */ } };
@@ -151,6 +160,7 @@ function loadAnalytics() {
   function gtag(..._args: unknown[]) { window.dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', gaId);
+  gtagFn = gtag;
   const s = document.createElement('script');
   s.async = true;
   s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
@@ -186,5 +196,35 @@ if (banner) {
     btn.addEventListener('click', () => { banner.hidden = false; $<HTMLButtonElement>('button', banner)?.focus(); }),
   );
 }
+
+/* Event tracking ------------------------------------------------------------ */
+// Clicks on elements marked with data-track (main buttons, email, WhatsApp,
+// LinkedIn) and FAQ openings are reported as events. See README, "Analytics".
+document.addEventListener('click', (e) => {
+  const el = (e.target as HTMLElement).closest<HTMLElement>('[data-track]');
+  if (!el) return;
+  const id = el.dataset.track ?? '';
+  if (id.startsWith('contact_')) track('contact_click', { method: id.replace('contact_', '') });
+  else if (id.startsWith('cta_')) track('cta_click', { location: id.replace('cta_', '') });
+  else track('outbound_click', { target: id });
+});
+$$<HTMLDetailsElement>('details[data-faq]').forEach((el) =>
+  el.addEventListener('toggle', () => { if (el.open) track('faq_open', { question: el.dataset.faq ?? '' }); }),
+);
+
+/* Language choice ------------------------------------------------------------ */
+// Visitors from Germany, Austria and Switzerland are sent to the German
+// homepage by a rule in netlify.toml. If such a visitor picks English, the
+// cookie below tells that rule to leave them on the English page. It is only
+// set when someone uses the language switcher.
+const EN_COOKIE = 'bk_lang_en';
+$$<HTMLAnchorElement>('[data-lang]').forEach((a) =>
+  a.addEventListener('click', () => {
+    document.cookie = a.dataset.lang === 'en'
+      ? `${EN_COOKIE}=1; Max-Age=31536000; Path=/; SameSite=Lax; Secure`
+      : `${EN_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax; Secure`;
+    track('language_switch', { to: a.dataset.lang ?? '' });
+  }),
+);
 
 export {};

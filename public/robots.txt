@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /thank-you/
+Disallow: /de/thank-you/
 
 Sitemap: https://bergkraftexports.com/sitemap.xml

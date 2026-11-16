@@ -1,0 +1,26 @@
+---
+// Language switcher. Links to the same page in the other language.
+// Clicking a language also stores the choice (see interactions.ts), so a
+// visitor in Germany, Austria or Switzerland who picks English is not sent
+// back to German by the region redirect in netlify.toml.
+import { t, languages, alternate, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<ul class="lang" role="list" aria-label={t(lang).ui.langLabel}>
+  {languages.map((l) => (
+    <li>
+      <a href={alternate(Astro.url.pathname, l.code)} hreflang={l.code} lang={l.code} aria-current={l.code === lang ? 'true' : undefined} data-lang={l.code}>
+        <span aria-hidden="true">{l.label}</span><span class="visually-hidden">{l.name}</span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .lang { display: inline-flex; border: 2px solid currentColor; border-radius: var(--radius); overflow: hidden; }
+  a { display: grid; place-items: center; min-width: 2.75rem; min-height: 2.5rem; padding-inline: 0.5rem; font-size: var(--t-sm); font-weight: 700; text-decoration: none; }
+  a[aria-current='true'] { background: var(--c-indigo); color: var(--c-white); }
+  :global(.on-dark) a[aria-current='true'] { background: var(--c-white); color: var(--c-indigo-deep); }
+  a:focus-visible { outline-offset: -4px; }
+</style>

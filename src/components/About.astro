@@ -1,45 +1,35 @@
 ---
 import { site } from '../data/site';
+import { t, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).about;
 ---
 <section class="section" id="about">
   <div class="container grid">
     <div class="places">
-      <h2>Close to you in Europe. Close to the source in India.</h2>
+      <h2>{d.h2}</h2>
       <div class="cities">
-        <div>
-          <h3>Berlin, Germany</h3>
-          <p class="muted">You deal with us in Europe, in your working day and in clear commercial terms.</p>
-        </div>
-        <div>
-          <h3>Mangalore, India</h3>
-          <p class="muted">Suppliers deal with us in India, in theirs. Mangalore is on the coast of Karnataka, the state where most Indian coffee is grown.</p>
-        </div>
+        {d.cities.map((c) => (
+          <div>
+            <h3>{c.name}</h3>
+            <p class="muted">{c.text}</p>
+          </div>
+        ))}
       </div>
-      <p class="muted small">
-        Buying from another continent takes more than a supplier’s phone number. It takes local
-        understanding, clear communication and someone coordinating the commercial details.
-      </p>
+      <p class="muted small">{d.note}</p>
     </div>
 
     <div class="founder">
-      {site.founderPhoto && <img src={site.founderPhoto} alt={`${site.founder}, founder of Bergkraft`} width="800" height="1000" loading="lazy" decoding="async" />}
+      {site.founderPhoto && <img src={site.founderPhoto} alt={`${site.founder}, ${d.photoAlt}`} width="800" height="1000" loading="lazy" decoding="async" />}
       <blockquote>
-        <p>
-          Bergkraft was founded around a simple idea: international buyers deserve an independent procurement
-          partner in India who works for their interests.
-        </p>
-        <p>
-          My background in product management and supply chain technology has shaped the way I approach
-          procurement: clear requirements, structured decisions, transparent commercial terms and
-          accountability.
-        </p>
+        {d.quote.map((q) => <p>{q}</p>)}
       </blockquote>
       <p class="who">
         <strong>{site.founder}</strong>
-        Founder. From Mangalore, based in Germany. Background in product management, supply chain and trade
-        finance software.
+        {d.role}
       </p>
-      {site.linkedinFounder && <a class="link" href={site.linkedinFounder} rel="noopener">LinkedIn profile</a>}
+      {site.linkedinFounder && <a class="link" href={site.linkedinFounder} rel="noopener" data-track="linkedin_founder">{d.linkedin}</a>}
     </div>
   </div>
 </section>

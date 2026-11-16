@@ -1,20 +1,24 @@
 ---
 // Accordion built on native <details>/<summary>: keyboard and screen-reader
 // accessible without JavaScript. The shared `name` lets one item open at a time.
-import { faq } from '../data/faq';
+import { t, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).faq;
+const faq = d.items;
 ---
 <section class="section section--tint" id="faq">
   <div class="container grid">
     <div class="side">
-      <h2>Questions buyers ask first.</h2>
+      <h2>{d.h2}</h2>
     </div>
     <div class="items">
       {faq.map((item, i) => (
-        <details name="faq" open={i === 0}>
+        <details name="faq" open={i === 0} data-faq={i + 1}>
           <summary><h3>{item.q}</h3><span class="icon" aria-hidden="true"></span></summary>
           <div class="answer">
             {item.a.map((p) => <p>{p}</p>)}
-            {item.link && <p><a class="link" href={item.link.href} rel="noopener">{item.link.label}</a></p>}
+            {'link' in item && item.link && <p><a class="link" href={item.link.href} rel="noopener">{item.link.label}</a></p>}
           </div>
         </details>
       ))}

@@ -1,13 +1,4 @@
 ---
-// Shown after a form submission when JavaScript is unavailable.
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Simple from '../views/Simple.astro';
 ---
-<BaseLayout title="Enquiry received | Bergkraft" noindex>
-  <section class="section">
-    <div class="container" style="display:grid;gap:var(--s-5);justify-items:start;max-width:48rem;margin-inline:0 auto">
-      <h1>Thank you.</h1>
-      <p class="lead">We have received your enquiry and will reply to the business email you provided.</p>
-      <a class="btn" href="/">Back to the homepage</a>
-    </div>
-  </section>
-</BaseLayout>
+<Simple lang="en" page="thanks" />

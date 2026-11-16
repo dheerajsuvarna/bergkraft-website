@@ -1,9 +1,12 @@
 ---
 // Marks information that Bergkraft must confirm before the page is published.
 // Search the project for "<Verify" to find every open item.
+import { t, type Lang } from '../i18n';
+interface Props { lang?: Lang }
+const { lang = 'en' } = Astro.props;
 ---
 <aside class="verify">
-  <strong>To verify before publication</strong>
+  <strong>{t(lang).legal.verify}</strong>
   <slot />
 </aside>
 

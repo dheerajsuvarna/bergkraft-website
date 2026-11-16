@@ -1,19 +1,15 @@
 ---
-const commitments = [
-  { t: 'No supplier commissions', d: 'Our only income is the fee you agree with us. We take nothing from the seller.' },
-  { t: 'You see every offer', d: 'Quotations are shown to you side by side, on the same grade, Incoterm and date.' },
-  { t: 'You know what was checked', d: 'Each supplier report states whether we reviewed documents, assessed remotely or visited in person.' },
-  { t: 'Inspection before loading', d: 'Where you agree to it, an independent agency inspects and tests the goods before they ship.' },
-];
+import { t, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).trust;
+const commitments = d.items;
 ---
 <section class="section" id="trust">
   <div class="container grid">
     <div class="claim">
-      <h2>You pay us. Not the supplier.</h2>
-      <p class="lead">
-        Many intermediaries in this trade earn a commission from the seller. We are hired and paid by the
-        buyer, so every comparison and every negotiation is done with one interest in mind: yours.
-      </p>
+      <h2>{d.h2}</h2>
+      <p class="lead">{d.lead}</p>
     </div>
 
     <ul class="list" role="list">
@@ -28,10 +24,7 @@ const commitments = [
       ))}
     </ul>
 
-    <p class="limits">
-      Vetting lowers risk. It cannot remove it. We will always tell you what has not been verified, and we
-      do not guarantee a supplier’s performance or compliance with every rule in your market.
-    </p>
+    <p class="limits">{d.limits}</p>
   </div>
 </section>
 
@@ -39,6 +32,7 @@ const commitments = [
   .grid { row-gap: var(--s-7); }
   .claim { grid-column: 1 / span 6; display: grid; gap: var(--s-5); align-content: start; }
   .claim h2 { font-size: clamp(2.75rem, 1.4rem + 6vw, 6rem); }
+  .claim h2:lang(de) { font-size: clamp(2.5rem, 1.3rem + 4.6vw, 4.75rem); hyphens: auto; }
   .list { grid-column: 8 / -1; display: grid; gap: var(--s-5); }
   li { display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--s-4); align-items: start; }
   .tick {

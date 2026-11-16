@@ -1,41 +1,21 @@
 ---
-// Sourcing categories, not a stock list. Each panel names the varieties we
-// source and the details a buyer should state.
-const products = [
-  {
-    name: 'Rice',
-    intro: 'Basmati and non-Basmati rice from Indian mills and exporters.',
-    groups: [
-      { label: 'Basmati', items: ['1121 Sella', '1121 Raw', '1509 Basmati'] },
-      { label: 'Non-Basmati', items: ['Sona Masoori', 'IR-64'] },
-    ],
-    specs: ['Grain length', 'Broken percentage', 'Moisture', 'Foreign matter', 'Processing', 'Crop year', 'Packaging', 'Quantity', 'Destination requirements'],
-  },
-  {
-    name: 'Green coffee',
-    intro: 'Arabica and Robusta from estates and curing works in Karnataka.',
-    groups: [
-      { label: 'Species', items: ['Indian Arabica', 'Indian Robusta'] },
-      { label: 'Processing', items: ['Washed', 'Natural', 'Monsooned'] },
-      { label: 'Origins', items: ['Coorg', 'Chikmagalur'] },
-    ],
-    specs: ['Screen size', 'Moisture', 'Defects', 'Processing', 'Cup profile', 'Origin', 'Packaging', 'Quantity'],
-  },
-];
+import { t, type Lang } from '../i18n';
+// Sourcing categories, not a stock list.
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).products;
+const products = d.items;
 ---
 <section class="section section--jute" id="products">
   <div class="container">
     <div class="section-intro">
-      <h2>Rice and green coffee, sourced to your specification.</h2>
-      <p class="lead">
-        We do not hold stock or sell from a price list. Every order starts from what you need, and suppliers
-        are found and compared against it.
-      </p>
+      <h2>{d.h2}</h2>
+      <p class="lead">{d.lead}</p>
     </div>
 
     <div class="panels">
       {products.map((p) => (
-        <article class="panel" id={p.name === 'Rice' ? 'rice' : 'coffee'}>
+        <article class="panel" id={p.id}>
           <h3 class="name">{p.name}</h3>
           <p>{p.intro}</p>
           <dl>
@@ -47,7 +27,7 @@ const products = [
             ))}
           </dl>
           <div class="specs">
-            <h4>Tell us</h4>
+            <h4>{d.tellUs}</h4>
             <ul role="list">{p.specs.map((s) => <li>{s}</li>)}</ul>
           </div>
         </article>
@@ -59,9 +39,9 @@ const products = [
 <style>
   .panels { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2.4vw, 2.5rem); }
   .panel { background: var(--c-white); border-radius: 14px; padding: clamp(1.5rem, 3.5vw, 3rem); display: grid; gap: var(--s-5); align-content: start; }
-  .name { font-family: var(--f-stencil); text-transform: uppercase; font-weight: 800; font-size: clamp(2.5rem, 1.6rem + 3.5vw, 4.25rem); line-height: 0.9; color: var(--c-indigo); }
+  .name { font-family: var(--f-stencil); text-transform: uppercase; font-weight: 800; font-size: clamp(2.5rem, 1.6rem + 3.5vw, 4.25rem); line-height: 0.9; color: var(--c-indigo); overflow-wrap: anywhere; }
   dl { display: grid; }
-  dl div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-4); padding-block: var(--s-3); border-top: 2px solid var(--c-tint); }
+  dl div { display: grid; grid-template-columns: 9rem 1fr; gap: var(--s-4); padding-block: var(--s-3); border-top: 2px solid var(--c-tint); }
   dt { color: var(--c-muted); }
   dd { font-weight: 600; }
   h4 { font-size: var(--t-base); font-weight: 700; margin-bottom: var(--s-3); }

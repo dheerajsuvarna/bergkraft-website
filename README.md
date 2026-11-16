@@ -24,6 +24,7 @@
 - [Quick start](#quick-start)
 - [Scripts](#scripts)
 - [Project structure](#project-structure)
+- [Languages](#languages)
 - [Editing content](#editing-content)
 - [Design system](#design-system)
 - [Enquiry form](#enquiry-form)
@@ -50,6 +51,8 @@ Bergkraft works for international buyers who want to source agricultural product
 | Cookie policy | `/cookies/` | Cookies and browser storage |
 | Thank you | `/thank-you/` | Shown after a form submission without JavaScript |
 | 404 | `/404` | Not-found page |
+
+Every page except the 404 also exists in German under `/de/`.
 
 ## Tech stack
 
@@ -104,14 +107,18 @@ The enquiry form cannot submit locally. Netlify Forms only works on a Netlify de
 ├── src/
 │   ├── components/         One component per homepage section, plus shared parts
 │   ├── data/
-│   │   ├── site.ts         Business facts, contacts, navigation
-│   │   └── faq.ts          FAQ content, also used for structured data
+│   │   └── site.ts         Business facts and contacts, shared by both languages
+│   ├── i18n/
+│   │   ├── en.ts           All English text
+│   │   ├── de.ts           All German text (same shape as en.ts)
+│   │   └── index.ts        Language helpers
 │   ├── layouts/
 │   │   ├── BaseLayout.astro    Head, metadata, header, footer, consent banner
 │   │   └── LegalLayout.astro   Wrapper for the legal pages
-│   ├── pages/              Routes
+│   ├── pages/              Routes: English at the top level, German in pages/de/
+│   ├── views/              Page bodies shared by both languages
 │   ├── scripts/
-│   │   └── interactions.ts Menu, bag marking tabs, form, analytics consent
+│   │   └── interactions.ts Menu, bag tabs, form, consent, event tracking, language cookie
 │   └── styles/
 │       └── global.css      Design tokens, base styles, utilities
 ├── tools/
@@ -135,21 +142,38 @@ Homepage sections, in order:
 | `FAQ.astro` | Accordion |
 | `ContactForm.astro` | Enquiry form |
 
-Shared parts: `Header`, `Footer`, `ConsentBanner`, `Verify` (marks unverified legal details).
+Shared parts: `Header`, `Footer`, `LangSwitch`, `ConsentBanner`, `Verify` (marks unverified legal details).
+
+## Languages
+
+The site is in English and German.
+
+| | English | German |
+| --- | --- | --- |
+| URL | `/` | `/de/` |
+| Text | `src/i18n/en.ts` | `src/i18n/de.ts` |
+| Audience | Global | Germany, Austria, Switzerland |
+
+How a visitor gets a language:
+
+- English is the default for everyone.
+- A visitor from Germany, Austria or Switzerland who opens the homepage is redirected to `/de/`. This is a rule in `netlify.toml` based on the visitor's country, so it only works on Netlify, not on the local dev server.
+- The EN / DE switcher in the header and footer works everywhere. If a visitor in those three countries picks English, a cookie (`bk_lang_en`) keeps them on the English homepage.
+- Only the homepage is redirected. Every page has `hreflang` tags so search engines index both versions.
+
+The two versions are not word-for-word copies. The English "About" section is written for a global audience; the German one stresses being close to the buyer in Europe.
+
+Adding or changing text: edit the same key in both `en.ts` and `de.ts`. If a key is missing in `de.ts`, `npm run build` fails with a type error that names it. The legal pages are separate files per language (`src/pages/impressum.astro` and `src/pages/de/impressum.astro`, and so on).
 
 ## Editing content
 
 | To change | Edit |
 | --- | --- |
-| Email, phone numbers, LinkedIn URLs, navigation, GA4 ID | `src/data/site.ts` |
-| FAQ questions and answers | `src/data/faq.ts` |
-| Copy in a section | The matching file in `src/components/` |
+| Any visible text, navigation labels, FAQ, form labels, page titles | `src/i18n/en.ts` and `src/i18n/de.ts` |
+| Email, phone numbers, LinkedIn URLs, founder photo, GA4 ID | `src/data/site.ts` |
 | Illustrative benchmark figures | The `ex` object in `src/components/Price.astro` (totals are calculated) |
-| Example bag markings in the hero | The `bags` list in `src/components/BagLabel.astro` |
-| Main button text | `cta` in `src/data/site.ts` |
-| Legal page text | `src/pages/impressum.astro`, `datenschutz.astro`, `cookies.astro` |
-| Page title and meta description | `src/data/site.ts` |
-| A new page | Add a file in `src/pages/` and list it in `public/sitemap.xml` |
+| Legal page text | `src/pages/` (English) and `src/pages/de/` (German) |
+| A new page | Add it in `src/pages/` and `src/pages/de/`, then list both in `public/sitemap.xml` |
 
 LinkedIn URLs and the founder photo are optional. While empty in `site.ts`, they are not shown.
 
@@ -190,13 +214,35 @@ Form name in Netlify: `sourcing-enquiry`.
 - Accept and Decline have identical styling.
 - The choice is stored in the browser's local storage under `bk-analytics-consent`.
 - "Cookie settings" in the footer reopens the panel. Declining after accepting disables analytics and removes its cookies.
+- Visitors who decline are not counted, so GA4 figures are lower than real traffic.
 
-The logic is at the end of `src/scripts/interactions.ts`.
+Besides page views, the site sends these events (only after consent). Every event carries a `language` parameter (`en` or `de`).
+
+| Event | When | Parameters |
+| --- | --- | --- |
+| `generate_lead` | The enquiry form is sent successfully | `product` |
+| `cta_click` | A main "Tell us what you need" button is clicked | `location` (`hero`, `header`) |
+| `contact_click` | An email or WhatsApp link is clicked | `method` (`email`, `whatsapp`) |
+| `faq_open` | An FAQ question is opened | `question` (its position, 1 to 8) |
+| `language_switch` | The language switcher is used | `to` |
+| `outbound_click` | A LinkedIn link is clicked | `target` |
+
+Set-up to do once in the Google Analytics interface:
+
+1. Admin, Events: mark `generate_lead` and `contact_click` as key events.
+2. Admin, Custom definitions: register `language`, `product`, `method`, `location` and `question` as event-scoped custom dimensions, so they can be used in reports.
+3. Admin, Data retention: set event data retention to 14 months.
+4. Admin, Product links: link Google Search Console, which shows the search terms people used to find the site.
+5. Reports, Acquisition, Traffic acquisition: shows where visitors come from (search, direct, referral, social).
+6. Use UTM parameters on links you share (for example `?utm_source=linkedin&utm_medium=social&utm_campaign=launch`) so campaigns show up by name.
+
+The logic is in `src/scripts/interactions.ts`.
 
 ## SEO and structured data
 
 - Title, meta description, canonical URL, Open Graph and Twitter metadata are set in `BaseLayout.astro`.
-- JSON-LD for `Organization`, `WebSite`, `Service` and `FAQPage` is generated in `src/pages/index.astro`. The FAQ data comes from `src/data/faq.ts`, so visible content and structured data stay identical.
+- Each page lists its English and German versions with `hreflang` tags, and `sitemap.xml` does the same.
+- JSON-LD for `Organization`, `WebSite`, `Service` and `FAQPage` is generated in `src/views/Home.astro`, in the language of the page. The FAQ data comes from the language files, so visible content and structured data stay identical.
 - `robots.txt` and `sitemap.xml` are in `public/`.
 - No address, reviews or ratings are included in structured data because none are published on the site.
 
@@ -257,16 +303,18 @@ Content:
 
 - [ ] LinkedIn URLs for the company and the founder
 - [ ] Both phone numbers, and that WhatsApp is active on them
-- [ ] EUDR answer in `src/data/faq.ts` rechecked against the [European Commission page](https://environment.ec.europa.eu/topics/forests/deforestation/eu-deforestation-regulation-eudr_en)
+- [ ] EUDR answer in `src/i18n/en.ts` and `de.ts` rechecked against the [European Commission page](https://environment.ec.europa.eu/topics/forests/deforestation/eu-deforestation-regulation-eudr_en)
 - [ ] Rice varieties and coffee types listed in `Products.astro`
 - [ ] Disclosure of any tie between Bergkraft and a supplier or farm network, wherever independence is claimed
 - [ ] Founder photo added
+- [ ] German text read by a native speaker; German legal pages reviewed by a lawyer
 - [ ] Every statement in `Trust.astro` and `Steps.astro` matches how Bergkraft actually works
 
 Technical:
 
 - [ ] Test enquiry received through Netlify Forms
-- [ ] GA4 receiving data after consent
+- [ ] GA4 receiving data and events after consent
+- [ ] Region redirect checked on the live site: German homepage from DE, AT and CH; English elsewhere; English stays after choosing EN
 - [ ] Lighthouse run on the deployed site
 
 ## Testing status
@@ -275,13 +323,14 @@ Checked locally against the production build in headless Chrome:
 
 - Build and type-check pass with no errors
 - No horizontal overflow at 360, 390, 768, 1024 and 1440 px
-- Navigation anchors resolve; the mobile menu opens and closes; the rice and coffee switch works
+- Both languages build; navigation anchors resolve; the mobile menu, the rice and coffee switch and the language switcher work
 - Form validation, success state (with a simulated server response) and error state
 - No request to Google before consent or after declining; the GA4 script loads after accepting
 - No browser console errors
 
 Not yet tested, because it needs the live site or real accounts:
 
+- The country-based redirect to German (it runs on Netlify's servers)
 - Real Netlify Forms submissions, spam filtering and notifications
 - GA4 data arriving in the property
 - Lighthouse scores on the deployed site

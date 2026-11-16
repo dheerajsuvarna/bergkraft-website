@@ -8,8 +8,10 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { site } from '../data/site';
+import { t, languages, alternate, type Lang } from '../i18n';
 
 interface Props {
+  lang: Lang;
   title?: string;
   description?: string;
   /** True on the homepage, so navigation uses in-page anchors. */
@@ -18,24 +20,31 @@ interface Props {
   /** JSON-LD objects. Must describe content that is visible on the page. */
   schema?: Record<string, unknown>[];
 }
-const { title = site.title, description = site.description, home = false, noindex = false, schema = [] } = Astro.props;
-const canonical = new URL(Astro.url.pathname, site.url).href;
-const ogImage = new URL('/images/og-image.png', site.url).href;
+const { lang, home = false, noindex = false, schema = [] } = Astro.props;
+const d = t(lang);
+const { title = d.meta.title, description = d.meta.description } = Astro.props;
+const abs = (p: string) => new URL(p, site.url).href;
+const canonical = abs(Astro.url.pathname);
+const ogImage = abs('/images/og-image.png');
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <!-- Tells search engines that each page exists in English and German. -->
+    {languages.map((l) => <link rel="alternate" hreflang={l.code} href={abs(alternate(Astro.url.pathname, l.code))} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(alternate(Astro.url.pathname, 'en'))} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#1f2a6d" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.brand} />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_GB'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -49,18 +58,18 @@ const ogImage = new URL('/images/og-image.png', site.url).href;
 
     {schema.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
 
-    <!-- Marks the document as script-enabled before first paint, so reveal
-         animations and the mobile menu only hide content when JS can show it. -->
+    <!-- Marks the document as script-enabled before first paint, so the
+         mobile menu only collapses when JavaScript can open it. -->
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <Header home={home} />
+    <a class="skip-link" href="#main">{d.ui.skip}</a>
+    <Header lang={lang} home={home} />
     <main id="main">
       <slot />
     </main>
-    <Footer home={home} />
-    <ConsentBanner />
+    <Footer lang={lang} home={home} />
+    <ConsentBanner lang={lang} />
     <script>
       import '../scripts/interactions.ts';
     </script>

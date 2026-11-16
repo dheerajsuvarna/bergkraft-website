@@ -1,23 +1,23 @@
 ---
 import BagLabel from './BagLabel.astro';
-import { site } from '../data/site';
+import { t, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
 ---
 <section class="hero" id="top">
   <div class="container grid">
     <div class="copy">
-      <h1><span>You tell us what you need from India.</span> <span>We handle the rest.</span></h1>
-      <p class="lead">
-        Bergkraft is your sourcing team in India for rice and green coffee. We find the suppliers, vet them,
-        negotiate the price and follow your order until it reaches your port.
-      </p>
+      <h1><span>{d.hero.h1a}</span> <span>{d.hero.h1b}</span></h1>
+      <p class="lead">{d.hero.lead}</p>
       <div class="actions">
-        <a class="btn btn--primary" href="#contact">{site.cta}</a>
-        <a class="btn" href="#what-we-do">See what we do</a>
+        <a class="btn btn--primary" href="#contact" data-track="cta_hero">{d.ui.cta}</a>
+        <a class="btn" href="#what-we-do">{d.hero.secondary}</a>
       </div>
-      <p class="pay">You pay us, not the supplier. So we answer only to you.</p>
+      <p class="pay">{d.hero.pay}</p>
     </div>
     <div class="visual">
-      <BagLabel />
+      <BagLabel lang={lang} />
     </div>
   </div>
 </section>
@@ -29,6 +29,8 @@ import { site } from '../data/site';
   .visual { grid-column: 8 / -1; }
   h1 span { display: block; }
   h1 span + span { color: var(--c-ink); }
+  /* German words are longer: let them break instead of overflowing. */
+  h1:lang(de) { font-size: clamp(2.5rem, 1.2rem + 5.4vw, 5.25rem); hyphens: auto; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
   .pay { font-weight: 700; font-stretch: 92%; border-left: 6px solid var(--c-marigold); padding-left: var(--s-3); }
 

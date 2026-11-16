@@ -1,0 +1,146 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import Verify from '../../components/Verify.astro';
+import { site } from '../../data/site';
+---
+<LegalLayout lang="de" title="Datenschutzerklärung" heading="Datenschutzerklärung" description="Wie die Bergkraft Private Limited personenbezogene Daten nach der DSGVO verarbeitet.">
+  <p>
+    Diese Erklärung beschreibt, welche personenbezogenen Daten verarbeitet werden, wenn Sie diese Website
+    besuchen oder uns kontaktieren, zu welchen Zwecken und auf welcher Rechtsgrundlage nach der
+    Datenschutz-Grundverordnung (DSGVO) dies geschieht und welche Rechte Sie haben.
+  </p>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>
+    <strong>{site.legalName}</strong><br />
+    E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+  </p>
+  <Verify lang="de">
+    <ul>
+      <li>Postanschrift des Verantwortlichen.</li>
+      <li>Ob ein Vertreter in der EU nach Art. 27 DSGVO zu benennen ist, mit Name und Kontaktdaten. Das Unternehmen ist in Indien gegründet und bietet Dienstleistungen für Unternehmen in der EU an.</li>
+      <li>Ob ein Datenschutzbeauftragter benannt wurde.</li>
+    </ul>
+  </Verify>
+
+  <h2>2. Hosting und Server-Logs</h2>
+  <p>
+    Diese Website wird von Netlify, Inc. (USA) gehostet. Beim Aufruf einer Seite verarbeitet der Hoster
+    technische Daten, die Ihr Browser übermittelt, etwa IP-Adresse, Datum und Uhrzeit, die aufgerufene Seite
+    und den Browsertyp, um die Website auszuliefern und abzusichern. Anhand des Landes, aus dem der Aufruf
+    kommt, wird außerdem entschieden, ob die Startseite auf Deutsch oder Englisch angezeigt wird.
+  </p>
+  <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren und zuverlässigen Betrieb der Website).</p>
+  <Verify lang="de">
+    <ul>
+      <li>Dass ein Auftragsverarbeitungsvertrag mit Netlify besteht.</li>
+      <li>Die Grundlage für die Übermittlung in die USA (zum Beispiel Zertifizierung nach dem EU-US Data Privacy Framework oder Standardvertragsklauseln) und die Speicherdauer der Logs bei Netlify.</li>
+    </ul>
+  </Verify>
+
+  <h2>3. Anfrageformular</h2>
+  <p>
+    Wenn Sie das Anfrageformular absenden, verarbeiten wir Ihre Angaben: Name, Unternehmen, Website des
+    Unternehmens, geschäftliche E-Mail-Adresse, Telefonnummer (falls angegeben), Land, Funktion und die
+    Angaben zu Ihrem Bedarf. Wir nutzen sie, um Ihre Anfrage zu prüfen und Ihnen zu antworten. Die Anfragen
+    werden über Netlify Forms, einen Dienst unseres Hosters, entgegengenommen, gespeichert und an uns
+    weitergeleitet. Ein verstecktes Feld dient der Erkennung automatisierter Spam-Einsendungen.
+  </p>
+  <p>
+    Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen auf Ihre Anfrage) und Art. 6 Abs. 1
+    lit. f DSGVO (berechtigtes Interesse an der Beantwortung geschäftlicher Anfragen).
+  </p>
+  <Verify lang="de">
+    <ul>
+      <li>Wie lange Anfragen bei Netlify und in den eigenen E-Mails oder Unterlagen von Bergkraft gespeichert und wann sie gelöscht werden.</li>
+      <li>Weitere Werkzeuge, die Anfragedaten erhalten, etwa ein CRM oder ein E-Mail-Anbieter.</li>
+    </ul>
+  </Verify>
+
+  <h2>4. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
+  <p>
+    Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Nachricht und Ihre Kontaktdaten,
+    um Ihr Anliegen zu bearbeiten. Wenn Sie uns über WhatsApp schreiben, werden Ihre Nachricht und Ihre
+    Telefonnummer auch vom Anbieter von WhatsApp (in der EU: WhatsApp Ireland Limited) nach dessen eigenen
+    Bedingungen und Datenschutzhinweisen verarbeitet. Sie können jederzeit stattdessen E-Mail nutzen.
+  </p>
+  <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b und lit. f DSGVO.</p>
+
+  <h2>5. Analyse (nur mit Ihrer Einwilligung)</h2>
+  <p>
+    Wenn Sie im Analyse-Hinweis „Akzeptieren“ wählen, lädt diese Website Google Analytics 4, einen Dienst der
+    Google Ireland Limited. Dabei werden Cookies gesetzt und Nutzungsdaten verarbeitet, etwa aufgerufene
+    Seiten, ungefährer Standort, Geräte- und Browserinformationen sowie Klicks auf Schaltflächen und
+    Kontaktlinks und das Absenden des Formulars. Daten können an Google LLC in den USA übermittelt werden.
+    Wenn Sie „Ablehnen“ wählen oder keine Auswahl treffen, wird Google Analytics nicht geladen und es werden
+    keine Analyse-Cookies gesetzt.
+  </p>
+  <p>
+    Rechtsgrundlage: Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Sie können die
+    Einwilligung jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen“ in der Fußzeile jeder
+    Seite widerrufen.
+  </p>
+  <Verify lang="de">
+    <ul>
+      <li>Dass die Auftragsverarbeitungsbedingungen von Google akzeptiert und die Aufbewahrungsdauer in Google Analytics eingestellt wurde.</li>
+      <li>Ob Google Signals oder Werbefunktionen aktiviert sind. Diese Erklärung geht davon aus, dass sie ausgeschaltet sind.</li>
+    </ul>
+  </Verify>
+
+  <h2>6. Cookies und lokaler Speicher</h2>
+  <p>
+    Ihre Auswahl zur Analyse wird im lokalen Speicher Ihres Browsers abgelegt, damit wir nicht bei jedem
+    Besuch erneut fragen. Wenn Sie über die Sprachauswahl Englisch wählen, merkt sich ein Cookie diese Wahl.
+    Beides ist technisch erforderlich (§ 25 Abs. 2 TDDDG). Einzelheiten stehen in der
+    <a href="/de/cookies/">Cookie-Richtlinie</a>.
+  </p>
+
+  <h2>7. Schriften und eingebundene Inhalte</h2>
+  <p>
+    Schriften werden von dieser Website selbst ausgeliefert. Es werden keine Schriften, Karten, Videos oder
+    Social-Media-Plugins von Servern Dritter geladen.
+  </p>
+
+  <h2>8. Empfänger und Übermittlung in Länder außerhalb der EU</h2>
+  <p>
+    Anfragen werden von Mitarbeitenden von Bergkraft in Deutschland und Indien bearbeitet. Soweit es für Ihren
+    Bedarf erforderlich ist, und nur nach Absprache mit Ihnen, können Informationen an Lieferanten und
+    Dienstleister weitergegeben werden. Unsere Anbieter für Hosting und Analyse können Daten in den USA
+    verarbeiten.
+  </p>
+  <Verify lang="de">
+    <ul>
+      <li>Die Garantien für Übermittlungen nach Indien, für das kein Angemessenheitsbeschluss der EU besteht (zum Beispiel Standardvertragsklauseln oder Art. 49 DSGVO).</li>
+    </ul>
+  </Verify>
+
+  <h2>9. Speicherdauer</h2>
+  <p>
+    Wir speichern personenbezogene Daten nur so lange, wie es für die genannten Zwecke erforderlich ist oder
+    gesetzliche Aufbewahrungspflichten es verlangen, und löschen sie danach.
+  </p>
+
+  <h2>10. Ihre Rechte</h2>
+  <p>Nach der DSGVO haben Sie das Recht,</p>
+  <ul>
+    <li>Auskunft über die zu Ihrer Person gespeicherten Daten zu erhalten (Art. 15);</li>
+    <li>unrichtige Daten berichtigen zu lassen (Art. 16);</li>
+    <li>Daten löschen (Art. 17) oder ihre Verarbeitung einschränken zu lassen (Art. 18);</li>
+    <li>Ihre Daten in einem übertragbaren Format zu erhalten (Art. 20);</li>
+    <li>einer Verarbeitung auf Grundlage berechtigter Interessen zu widersprechen (Art. 21);</li>
+    <li>eine Einwilligung jederzeit zu widerrufen, ohne dass die bisherige Verarbeitung berührt wird (Art. 7 Abs. 3);</li>
+    <li>sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77).</li>
+  </ul>
+  <p>Um Ihre Rechte auszuüben, schreiben Sie an <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  <Verify lang="de">
+    <ul>
+      <li>Die hier zu nennende Aufsichtsbehörde. Sie hängt von der Niederlassung des Verantwortlichen oder seines Vertreters ab.</li>
+    </ul>
+  </Verify>
+
+  <h2>11. Automatisierte Entscheidungen</h2>
+  <p>Wir nutzen keine automatisierte Entscheidungsfindung und kein Profiling im Sinne von Art. 22 DSGVO.</p>
+
+  <h2>12. Änderungen dieser Erklärung</h2>
+  <p>Wir passen diese Erklärung an, wenn sich die Website oder unsere Datenverarbeitung ändert.</p>
+</LegalLayout>

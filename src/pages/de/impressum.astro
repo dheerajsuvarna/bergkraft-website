@@ -1,0 +1,70 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import Verify from '../../components/Verify.astro';
+import { site } from '../../data/site';
+import { t } from '../../i18n';
+const phones = t('de').contact.phones;
+---
+<LegalLayout lang="de" title="Impressum" heading="Impressum" description="Impressum und Anbieterkennzeichnung der Bergkraft Private Limited.">
+  <h2>Anbieter</h2>
+  <p><strong>{site.legalName}</strong><br />Eine in Indien gegründete Kapitalgesellschaft (Private Limited Company).</p>
+  <Verify lang="de">
+    <ul>
+      <li>Eingetragene Geschäftsanschrift in Indien (laut Gründungsunterlagen).</li>
+      <li>Corporate Identification Number (CIN) und zuständiger Registrar of Companies.</li>
+      <li>Ob eine Geschäftsanschrift in Deutschland besteht und veröffentlicht werden darf. Hier ist keine angegeben.</li>
+    </ul>
+  </Verify>
+
+  <h2>Vertreten durch</h2>
+  <Verify lang="de">
+    <ul>
+      <li>Vollständige Namen der vertretungsberechtigten Direktoren.</li>
+    </ul>
+  </Verify>
+
+  <h2>Kontakt</h2>
+  <p>
+    E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+    {site.phones.map((p) => <>{phones[p.office]}: {p.display}<br /></>)}
+  </p>
+
+  <h2>Registrierungen</h2>
+  <p>Importer Exporter Code (IEC): {site.iec}</p>
+  <Verify lang="de">
+    <ul>
+      <li>IEC-Nummer anhand des Originalzertifikats.</li>
+      <li>GSTIN, falls sie veröffentlicht werden soll.</li>
+      <li>Umsatzsteuer-Identifikationsnummer in Deutschland oder der EU, falls vorhanden.</li>
+    </ul>
+  </Verify>
+
+  <h2>Inhaltlich verantwortlich</h2>
+  <Verify lang="de">
+    <ul>
+      <li>Name und Anschrift der für redaktionelle Inhalte verantwortlichen Person (§ 18 Abs. 2 MStV), falls erforderlich.</li>
+    </ul>
+  </Verify>
+
+  <h2>Art dieser Website</h2>
+  <p>
+    Diese Website beschreibt Beschaffungsdienstleistungen für Unternehmen. Sie ist kein Angebot zum Verkauf
+    von Waren. Als Rechenbeispiel gekennzeichnete Zahlen sind Beispiele und keine Angebote, erzielten
+    Ergebnisse oder Garantien.
+  </p>
+
+  <h2>Haftung für Inhalte und Links</h2>
+  <p>
+    Wir erstellen die Inhalte dieser Website mit Sorgfalt, können aber nicht gewährleisten, dass sie jederzeit
+    vollständig, richtig und aktuell sind. Diese Website enthält Links zu externen Websites, darunter
+    offizielle Quellen. Auf deren Inhalte haben wir keinen Einfluss, verantwortlich sind die jeweiligen
+    Betreiber. Erhalten wir Kenntnis von rechtswidrigen Inhalten, entfernen wir den Link.
+  </p>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <Verify lang="de">
+    <ul>
+      <li>Hinweis zur Teilnahme an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle (§ 36 VSBG), falls für das Unternehmen einschlägig.</li>
+    </ul>
+  </Verify>
+</LegalLayout>

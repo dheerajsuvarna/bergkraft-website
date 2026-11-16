@@ -3,85 +3,93 @@
 // - `data-netlify` lets Netlify detect the form in the built HTML at deploy time.
 // - `netlify-honeypot` adds spam protection without a third-party CAPTCHA.
 // - With JavaScript, interactions.ts submits in the background and shows a
-//   success or error message. Without it, the form posts normally to /thank-you/.
+//   success or error message. Without it, the form posts normally to the thank-you page.
+// Both languages post to the same Netlify form; the hidden `language` field
+// records which version was used. Field names stay in English on purpose.
 import { site } from '../data/site';
+import { t, path, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const c = d.contact;
 ---
 <section class="section section--indigo on-dark" id="contact">
   <div class="container grid">
     <div class="intro">
-      <h2>Tell us what you need to source from India.</h2>
-      <p class="lead">
-        Share your product specifications, quantity and destination. We will assess your requirement and
-        discuss how Bergkraft can support your procurement.
-      </p>
+      <h2>{c.h2}</h2>
+      <p class="lead">{c.lead}</p>
       <dl class="direct">
-        <div><dt>Email</dt><dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+        <div><dt>{c.email}</dt><dd><a class="link" href={`mailto:${site.email}`} data-track="contact_email">{site.email}</a></dd></div>
         {site.phones.map((p) => (
-          <div><dt>{p.office} ({p.note})</dt><dd><a class="link" href={p.href} rel="noopener">{p.display}</a></dd></div>
+          <div><dt>{c.phones[p.office]}</dt><dd><a class="link" href={p.href} rel="noopener" data-track="contact_whatsapp">{p.display}</a></dd></div>
         ))}
       </dl>
     </div>
 
     <div class="panel">
-      <form name="sourcing-enquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" data-enquiry-form novalidate>
+      <form
+        name="sourcing-enquiry" method="POST" action={path(lang, '/thank-you/')} data-netlify="true" netlify-honeypot="bot-field" novalidate
+        data-enquiry-form
+        data-msg-required={c.msg.required} data-msg-checkbox={c.msg.checkbox} data-msg-email={c.msg.email}
+        data-msg-one={c.msg.one} data-msg-many={c.msg.many} data-msg-failed={c.msg.failed}
+        data-label-submit={c.submit} data-label-sending={c.sending}
+      >
         <input type="hidden" name="form-name" value="sourcing-enquiry" />
-        <p class="hp"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <input type="hidden" name="language" value={lang} />
+        <p class="hp"><label>{c.honeypot} <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
 
         <div class="status" role="alert" data-form-error hidden></div>
 
         <fieldset>
-          <legend>About you</legend>
-          <div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" autocomplete="name" required /></div>
-          <div class="field"><label for="f-role">Role</label><input id="f-role" name="role" autocomplete="organization-title" required /></div>
-          <div class="field"><label for="f-company">Company name</label><input id="f-company" name="company" autocomplete="organization" required /></div>
-          <div class="field"><label for="f-website">Company website</label><input id="f-website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="example.com" required /></div>
-          <div class="field"><label for="f-email">Business email</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div>
-          <div class="field"><label for="f-phone">Phone number <span class="opt">optional</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" /></div>
-          <div class="field"><label for="f-country">Country</label><input id="f-country" name="country" autocomplete="country-name" required /></div>
+          <legend>{c.legendYou}</legend>
+          <div class="field"><label for="f-name">{c.f.name}</label><input id="f-name" name="name" autocomplete="name" required /></div>
+          <div class="field"><label for="f-role">{c.f.role}</label><input id="f-role" name="role" autocomplete="organization-title" required /></div>
+          <div class="field"><label for="f-company">{c.f.company}</label><input id="f-company" name="company" autocomplete="organization" required /></div>
+          <div class="field"><label for="f-website">{c.f.website}</label><input id="f-website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="example.com" required /></div>
+          <div class="field"><label for="f-email">{c.f.email}</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="f-phone">{c.f.phone} <span class="opt">{d.ui.optional}</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="f-country">{c.f.country}</label><input id="f-country" name="country" autocomplete="country-name" required /></div>
         </fieldset>
 
         <fieldset>
-          <legend>Your requirement</legend>
+          <legend>{c.legendReq}</legend>
           <div class="field">
-            <label for="f-product">Product</label>
+            <label for="f-product">{c.f.product}</label>
             <select id="f-product" name="product" required>
-              <option value="">Select</option><option>Rice</option><option>Coffee</option><option>Rice and coffee</option>
+              <option value="">{d.ui.select}</option>{c.productOptions.map((o) => <option>{o}</option>)}
             </select>
           </div>
-          <div class="field"><label for="f-qty">Quantity per order (MT)</label><input id="f-qty" name="quantity_mt" inputmode="decimal" required /></div>
-          <div class="field wide"><label for="f-spec">Grade or specifications</label><textarea id="f-spec" name="specifications" rows="3" required></textarea></div>
-          <div class="field"><label for="f-orders">Estimated orders per year</label><input id="f-orders" name="orders_per_year" inputmode="numeric" required /></div>
-          <div class="field"><label for="f-dest">Destination country and port</label><input id="f-dest" name="destination" required /></div>
+          <div class="field"><label for="f-qty">{c.f.quantity}</label><input id="f-qty" name="quantity_mt" inputmode="decimal" required /></div>
+          <div class="field wide"><label for="f-spec">{c.f.specs}</label><textarea id="f-spec" name="specifications" rows="3" required></textarea></div>
+          <div class="field"><label for="f-orders">{c.f.orders}</label><input id="f-orders" name="orders_per_year" inputmode="numeric" required /></div>
+          <div class="field"><label for="f-dest">{c.f.destination}</label><input id="f-dest" name="destination" required /></div>
           <div class="field">
-            <label for="f-pay">Preferred payment terms</label>
+            <label for="f-pay">{c.f.payment}</label>
             <select id="f-pay" name="payment_terms" required>
-              <option value="">Select</option><option>Advance payment</option><option>LC at sight</option><option>Documentary collection</option><option>Other or to be discussed</option>
+              <option value="">{d.ui.select}</option>{c.paymentOptions.map((o) => <option>{o}</option>)}
             </select>
           </div>
           <div class="field">
-            <label for="f-time">Timeline</label>
+            <label for="f-time">{c.f.timeline}</label>
             <select id="f-time" name="timeline" required>
-              <option value="">Select</option><option>Within 1 month</option><option>1 to 3 months</option><option>3 to 6 months</option><option>Later or exploring</option>
+              <option value="">{d.ui.select}</option>{c.timelineOptions.map((o) => <option>{o}</option>)}
             </select>
           </div>
-          <div class="field wide"><label for="f-more">Additional requirements <span class="opt">optional</span></label><textarea id="f-more" name="additional" rows="3"></textarea></div>
+          <div class="field wide"><label for="f-more">{c.f.additional} <span class="opt">{d.ui.optional}</span></label><textarea id="f-more" name="additional" rows="3"></textarea></div>
         </fieldset>
 
         <!-- Consent is never pre-ticked. -->
         <label class="consent">
           <input type="checkbox" name="privacy_acknowledged" value="yes" required />
-          <span>
-            I have read the <a href="/datenschutz/">privacy policy</a> and agree that Bergkraft may use the details
-            above to assess and reply to this enquiry.
-          </span>
+          <span>{c.consent[0]}<a href={path(lang, '/datenschutz/')}>{c.consent[1]}</a>{c.consent[2]}</span>
         </label>
 
-        <button class="btn btn--primary" type="submit" data-submit>Send enquiry</button>
+        <button class="btn btn--primary" type="submit" data-submit>{c.submit}</button>
       </form>
 
       <div class="done" role="status" tabindex="-1" data-form-success hidden>
-        <h3>Thank you. Your enquiry has been received.</h3>
-        <p>We will review your requirement and reply to the business email you provided.</p>
+        <h3>{c.successTitle}</h3>
+        <p>{c.successText}</p>
       </div>
     </div>
   </div>

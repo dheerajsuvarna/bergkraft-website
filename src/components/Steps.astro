@@ -1,36 +1,16 @@
 ---
+import { t, type Lang } from '../i18n';
 // The core promise: four steps, in order. Numbered because it is a sequence.
-const steps = [
-  {
-    verb: 'Find',
-    text: 'We search the Indian market for mills, estates and exporters that can supply your exact specification and volume, and bring you a shortlist.',
-    get: 'A shortlist of suitable suppliers',
-  },
-  {
-    verb: 'Vet',
-    text: 'We check registrations, export records, facilities and samples, and tell you exactly what was checked and how.',
-    get: 'A written report on each supplier',
-  },
-  {
-    verb: 'Negotiate',
-    text: 'We agree a price benchmark with you, compare offers on the same terms and negotiate with suppliers on your behalf.',
-    get: 'Offers compared side by side',
-  },
-  {
-    verb: 'Deliver',
-    text: 'We coordinate samples, inspection, documents and shipment with the supplier and forwarder until the goods reach your port.',
-    get: 'One contact from order to arrival',
-  },
-];
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).steps;
+const steps = d.items;
 ---
 <section class="section section--indigo on-dark" id="what-we-do">
   <div class="container">
     <div class="section-intro">
-      <h2>Everything between your enquiry and your delivery.</h2>
-      <p class="lead">
-        You do not need an office, a buyer or a contact in India. Send us your requirement and we run the
-        whole process for you.
-      </p>
+      <h2>{d.h2}</h2>
+      <p class="lead">{d.lead}</p>
     </div>
 
     <ol class="steps" role="list">
@@ -39,16 +19,12 @@ const steps = [
           <span class="n" aria-hidden="true">{i + 1}</span>
           <h3>{s.verb}</h3>
           <p>{s.text}</p>
-          <p class="get"><span>You get</span>{s.get}</p>
+          <p class="get"><span>{d.youGet}</span>{s.get}</p>
         </li>
       ))}
     </ol>
 
-    <p class="contract muted">
-      You generally sign the purchase contract directly with the supplier, so there is no hidden margin on
-      the goods. Your agreement with Bergkraft covers our services only. Contractual and export
-      responsibilities are agreed for each order.
-    </p>
+    <p class="contract muted">{d.contract}</p>
   </div>
 </section>
 

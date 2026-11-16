@@ -3,7 +3,7 @@ import LegalLayout from '../layouts/LegalLayout.astro';
 import Verify from '../components/Verify.astro';
 import { site } from '../data/site';
 ---
-<LegalLayout title="Cookie Policy" heading="Cookie policy" description="Which cookies and browser storage the Bergkraft website uses, and how to change your choice.">
+<LegalLayout lang="en" title="Cookie Policy" heading="Cookie policy" description="Which cookies and browser storage the Bergkraft website uses, and how to change your choice.">
   <p>
     This website uses as little browser storage as possible. Nothing optional is stored or loaded unless you
     agree to it.
@@ -22,10 +22,11 @@ import { site } from '../data/site';
       <thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Purpose</th><th scope="col">Duration</th></tr></thead>
       <tbody>
         <tr><td>bk-analytics-consent</td><td>Local storage</td><td>Remembers whether you accepted or declined analytics.</td><td>Until you clear your browser storage</td></tr>
+        <tr><td>bk_lang_en</td><td>Cookie</td><td>Set only if you choose English in the language switcher, so the homepage stays in English.</td><td>1 year</td></tr>
       </tbody>
     </table>
   </div>
-  <p>Legal basis: § 25(2) TDDDG. No consent is required because the entry is needed to respect your choice.</p>
+  <p>Legal basis: § 25(2) TDDDG. No consent is required because the entries are needed to respect your choices.</p>
 
   <h2>Analytics cookies (only after you accept)</h2>
   <div class="table">
@@ -58,6 +59,6 @@ import { site } from '../data/site';
 <style>
   .table { overflow-x: auto; margin-bottom: var(--s-4); }
   table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 34rem; }
-  th, td { text-align: left; vertical-align: top; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 1px solid var(--c-line); }
-  th { font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-indigo); }
+  th, td { text-align: left; vertical-align: top; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 2px solid var(--c-tint); }
+  th { color: var(--c-indigo); }
 </style>

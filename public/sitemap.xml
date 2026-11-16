@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://bergkraftexports.com/</loc></url>
-  <url><loc>https://bergkraftexports.com/impressum/</loc></url>
-  <url><loc>https://bergkraftexports.com/datenschutz/</loc></url>
-  <url><loc>https://bergkraftexports.com/cookies/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://bergkraftexports.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/impressum/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/impressum/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/de/impressum/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/impressum/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/impressum/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/datenschutz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/datenschutz/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/datenschutz/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/de/datenschutz/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/datenschutz/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/datenschutz/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/cookies/"/>
+  </url>
+  <url>
+    <loc>https://bergkraftexports.com/de/cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bergkraftexports.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bergkraftexports.com/de/cookies/"/>
+  </url>
 </urlset>

@@ -1,0 +1,66 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import Verify from '../../components/Verify.astro';
+import { site } from '../../data/site';
+---
+<LegalLayout lang="de" title="Cookie-Richtlinie" heading="Cookie-Richtlinie" description="Welche Cookies und Browser-Speicher die Website von Bergkraft nutzt und wie Sie Ihre Auswahl ändern.">
+  <p>
+    Diese Website nutzt so wenig Browser-Speicher wie möglich. Nichts Optionales wird gespeichert oder
+    geladen, ohne dass Sie zustimmen.
+  </p>
+
+  <h2>Ihre Auswahl</h2>
+  <p>
+    Beim ersten Besuch fragen wir, ob Analyse genutzt werden darf. „Akzeptieren“ und „Ablehnen“ sind
+    gleichwertige Optionen, die Website funktioniert in beiden Fällen gleich. Sie können Ihre Entscheidung
+    jederzeit ändern:
+  </p>
+  <p><button type="button" class="btn" data-consent-open>Cookie-Einstellungen öffnen</button></p>
+
+  <h2>Erforderlicher Speicher</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Art</th><th scope="col">Zweck</th><th scope="col">Dauer</th></tr></thead>
+      <tbody>
+        <tr><td>bk-analytics-consent</td><td>Lokaler Speicher</td><td>Merkt sich, ob Sie Analyse akzeptiert oder abgelehnt haben.</td><td>Bis Sie den Browser-Speicher löschen</td></tr>
+        <tr><td>bk_lang_en</td><td>Cookie</td><td>Wird nur gesetzt, wenn Sie in der Sprachauswahl Englisch wählen, damit die Startseite auf Englisch bleibt.</td><td>1 Jahr</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Rechtsgrundlage: § 25 Abs. 2 TDDDG. Eine Einwilligung ist nicht nötig, weil die Einträge erforderlich sind, um Ihre Auswahl zu beachten.</p>
+
+  <h2>Analyse-Cookies (nur nach Ihrer Zustimmung)</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Anbieter</th><th scope="col">Zweck</th><th scope="col">Dauer</th></tr></thead>
+      <tbody>
+        <tr><td>_ga</td><td>Google Analytics</td><td>Unterscheidet Besucher für Nutzungsstatistiken.</td><td>Bis zu 2 Jahre</td></tr>
+        <tr><td>_ga_{site.ga4Id.replace('G-', '')}</td><td>Google Analytics</td><td>Speichert den Zustand eines Besuchs.</td><td>Bis zu 2 Jahre</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Rechtsgrundlage: Ihre Einwilligung (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO). Wenn Sie ablehnen oder
+    die Einwilligung später widerrufen, wird Google Analytics abgeschaltet und seine Cookies werden auf
+    dieser Website entfernt, soweit der Browser es zulässt.
+  </p>
+  <Verify lang="de">
+    <ul>
+      <li>Cookie-Namen und Laufzeiten anhand der Live-Konfiguration von Google Analytics nach dem Start.</li>
+      <li>Dass keine weiteren Tags, Pixel oder eingebundenen Dienste zur Website hinzugefügt wurden.</li>
+    </ul>
+  </Verify>
+
+  <h2>Was wir nicht nutzen</h2>
+  <p>Keine Werbe-Cookies, keine Social-Media-Plugins und keine Schriften von Drittanbietern.</p>
+
+  <h2>Weitere Informationen</h2>
+  <p>Einzelheiten zur Datenverarbeitung und zu Ihren Rechten stehen in der <a href="/de/datenschutz/">Datenschutzerklärung</a>.</p>
+</LegalLayout>
+
+<style>
+  .table { overflow-x: auto; margin-bottom: var(--s-4); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 34rem; }
+  th, td { text-align: left; vertical-align: top; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 2px solid var(--c-tint); }
+  th { color: var(--c-indigo); }
+</style>

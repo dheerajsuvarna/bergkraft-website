@@ -1,28 +1,27 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { site } from '../data/site';
-interface Props { title: string; heading: string; description: string }
-const { title, heading, description } = Astro.props;
+import { t, type Lang } from '../i18n';
+interface Props { lang: Lang; title: string; heading: string; description: string }
+const { lang, title, heading, description } = Astro.props;
+const d = t(lang).legal;
 ---
-<BaseLayout title={`${title} | ${site.brand}`} description={description}>
+<BaseLayout lang={lang} title={`${title} | ${site.brand}`} description={description}>
   <article class="section">
     <div class="container">
       <h1>{heading}</h1>
       {!site.legalPagesReviewed && (
-        <p class="draft" role="note">
-          <strong>Draft.</strong> This page contains items marked “To verify before publication” and has not
-          yet been reviewed by a lawyer. It must be completed before the website goes live.
-        </p>
+        <p class="draft" role="note"><strong>{d.draftStrong}</strong> {d.draft}</p>
       )}
       <div class="prose">
         <slot />
-        <p class="muted">Last updated: {site.legalLastUpdated}</p>
+        <p class="muted">{d.updated}</p>
       </div>
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  h1 { font-size: var(--t-h2); margin-block: var(--s-5) var(--s-6); }
+  h1 { font-size: var(--t-h2); margin-block: 0 var(--s-6); hyphens: auto; }
   .draft { max-width: 44rem; border-radius: var(--radius); background: var(--c-marigold); color: var(--c-indigo-deep); padding: var(--s-4); font-size: var(--t-sm); }
 </style>

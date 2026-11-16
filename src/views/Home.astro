@@ -1,0 +1,75 @@
+---
+// The homepage, shared by both languages. Text comes from src/i18n/.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Steps from '../components/Steps.astro';
+import Trust from '../components/Trust.astro';
+import Products from '../components/Products.astro';
+import Price from '../components/Price.astro';
+import About from '../components/About.astro';
+import FAQ from '../components/FAQ.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+import { t, path, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const pageUrl = new URL(path(lang, '/'), site.url).href;
+
+// Structured data. Every statement here is also visible on the page.
+// No address, reviews or ratings are included because none are published.
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site.url}/#organization`,
+  name: site.legalName,
+  alternateName: site.brand,
+  url: site.url,
+  email: site.email,
+  description: d.meta.orgDescription,
+  founder: { '@type': 'Person', name: site.founder },
+  location: d.about.cities.map((c) => ({ '@type': 'Place', name: c.name })),
+  ...(site.linkedinCompany ? { sameAs: [site.linkedinCompany] } : {}),
+};
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: site.brand,
+  publisher: { '@id': `${site.url}/#organization` },
+  inLanguage: ['en', 'de'],
+};
+const service = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: d.meta.serviceName,
+  url: pageUrl,
+  inLanguage: lang,
+  provider: { '@id': `${site.url}/#organization` },
+  description: d.meta.serviceDescription,
+  areaServed: d.meta.areaServed,
+  audience: { '@type': 'BusinessAudience', name: d.meta.audience },
+};
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: d.faq.items.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a.join(' ') },
+  })),
+};
+---
+<BaseLayout lang={lang} home schema={[org, website, service, faqPage]}>
+  <Hero lang={lang} />
+  <Steps lang={lang} />
+  <Trust lang={lang} />
+  <Products lang={lang} />
+  <Price lang={lang} />
+  <About lang={lang} />
+  <FAQ lang={lang} />
+  <ContactForm lang={lang} />
+</BaseLayout>
